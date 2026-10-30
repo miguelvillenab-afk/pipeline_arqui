@@ -1,3 +1,5 @@
+`timescale 1ns/1ps
+
 module datapath(input  clk, reset,
                 input  [1:0]  ResultSrc, 
                 input  PCSrc, ALUSrc,
@@ -8,7 +10,11 @@ module datapath(input  clk, reset,
                 output [31:0] PC,
                 input  [31:0] Instr,
                 output [31:0] ALUResult, WriteData, 
-                input  [31:0] ReadData);
+                input  [31:0] ReadData,
+                output [31:0] IF_ID_Instr,
+                output [31:0] IF_ID_PC,
+                output [31:0] IF_ID_PC4
+                );
   
   localparam WIDTH = 32; // Define a local parameter for bus width
 
@@ -31,6 +37,18 @@ module datapath(input  clk, reset,
     .y(PCPlus4)
   ); 
 
+  ifid reg_ifid (
+    .clk (clk),
+    .reset (reset),
+    .stall (1'b0),  //igual q el flush 
+    .flush (1'b0), //0 hardcodeado para hacer en una siguiente fase
+    .Instr_in (Instr),
+    .PC_in (PC),
+    .PC4_in (PCPlus4),
+    .IF_ID_Instr (IF_ID_Instr),
+    .IF_ID_PC (IF_ID_PC),
+    .IF_ID_PC4 (IF_ID_PC4)
+  );
   adder       pcaddbranch(
     .a(PC), 
     .b(ImmExt), 
