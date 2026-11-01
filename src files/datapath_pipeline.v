@@ -4,17 +4,14 @@
 //
 // Datapath del procesador RISC-V de 5 etapas:
 //
-//   IF -> IF/ID -> ID -> ID/EX -> EX -> EX/MEM -> MEM -> WB
+//   IF -> IF/ID -> ID -> ID/EX -> EX -> EX/MEM -> MEM -> MEM/WB -> WB
 //
-// Implementado hasta la Fase 3:
+// Implementado hasta la Fase 4:
 //   - Fase 1: PC, imem (desde top_pipeline), PC+4 y registro IF/ID.
 //   - Fase 2: decodificación (maindec + aludec) en ID, regfile, extend y
 //             registro ID/EX con stall/flush reales.
 //   - Fase 3: ALU, mux ALUSrc, sumador de branch/jal y registro EX/MEM.
-//
-// La etapa MEM ya usa EX_MEM_* para direccionar dmem y escribir en el
-// regfile, como puente provisional hasta la Fase 4. En la Fase 4 se inserta
-// el registro MEM/WB y el writeback pasa a usar MEM_WB_*.
+//   - Fase 4: registro MEM/WB y writeback real desde MEM_WB_* al regfile.
 //
 // Todavía NO incluye forwarding ni detección de load-use (Fase 6).
 //////////////////////////////////////////////////////////////////////////////////
@@ -65,7 +62,15 @@ module datapath_pipeline(
     output        EX_MEM_RegWrite,
     output [1:0]  EX_MEM_ResultSrc,
     output        EX_MEM_Branch,
-    output        EX_MEM_Jump
+    output        EX_MEM_Jump,
+
+    // Observabilidad Fase 4
+    output [31:0] MEM_WB_ReadData,
+    output [31:0] MEM_WB_ALUResult,
+    output [31:0] MEM_WB_PC4,
+    output [4:0]  MEM_WB_rd,
+    output        MEM_WB_RegWrite,
+    output [1:0]  MEM_WB_ResultSrc
     );
 
     localparam WIDTH = 32;
@@ -73,7 +78,7 @@ module datapath_pipeline(
     // ---------------------------------------------------------------- IF
     wire [31:0] PCNext, PCPlus4;
 
-    // Resultado de writeback (provisional hasta la Fase 4)
+    // Resultado de writeback
     wire [31:0] wb_Result;
 
     flopr #(WIDTH) pcreg (
@@ -135,13 +140,13 @@ module datapath_pipeline(
         .ALUControl (dec_ALUControl)
     );
 
-    // El puerto de escritura queda provisionalmente en EX/MEM hasta la Fase 4.
+    // El puerto de escritura usa el resultado y el rd que salen de MEM/WB.
     regfile rf (
         .clk (clk),
-        .we3 (EX_MEM_RegWrite),
+        .we3 (MEM_WB_RegWrite),
         .a1  (IF_ID_Instr[19:15]),
         .a2  (IF_ID_Instr[24:20]),
-        .a3  (EX_MEM_rd),
+        .a3  (MEM_WB_rd),
         .wd3 (wb_Result),
         .rd1 (id_SrcA),
         .rd2 (id_WriteData)
@@ -264,14 +269,31 @@ module datapath_pipeline(
         .EX_MEM_Jump     (EX_MEM_Jump)
     );
 
-    // ------------------------------------------------- MEM / WB provisional
-    // Fase 4 reemplazará este bloque por el registro MEM/WB.
+    // ------------------------------------------------------------ MEM/WB
+    memwb reg_memwb (
+        .clk               (clk),
+        .reset             (reset),
+        .ReadData          (ReadData),
+        .ALUResult         (EX_MEM_ALUResult),
+        .PC4               (EX_MEM_PC4),
+        .rd                (EX_MEM_rd),
+        .RegWrite          (EX_MEM_RegWrite),
+        .ResultSrc         (EX_MEM_ResultSrc),
+        .MEM_WB_ReadData   (MEM_WB_ReadData),
+        .MEM_WB_ALUResult  (MEM_WB_ALUResult),
+        .MEM_WB_PC4        (MEM_WB_PC4),
+        .MEM_WB_rd         (MEM_WB_rd),
+        .MEM_WB_RegWrite   (MEM_WB_RegWrite),
+        .MEM_WB_ResultSrc  (MEM_WB_ResultSrc)
+    );
+
+    // ---------------------------------------------------------------- WB
     assign DataAdr   = EX_MEM_ALUResult;
     assign MemWrite  = EX_MEM_MemWrite;
     assign WriteData = EX_MEM_WriteData;
 
-    assign wb_Result = (EX_MEM_ResultSrc == 2'b01) ? ReadData :
-                       (EX_MEM_ResultSrc == 2'b10) ? EX_MEM_PC4 :
-                                                     EX_MEM_ALUResult;
+    assign wb_Result = (MEM_WB_ResultSrc == 2'b01) ? MEM_WB_ReadData :
+                       (MEM_WB_ResultSrc == 2'b10) ? MEM_WB_PC4 :
+                                                     MEM_WB_ALUResult;
 
 endmodule

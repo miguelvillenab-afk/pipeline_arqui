@@ -8,8 +8,8 @@ Listo. Verifiqué y corregí las fases 0, 1 y 2, e implementé la fase 3 complet
 | 1 — Fetch + IF/ID | ✅ Corregida y verificada | **TESTBENCH IF/ID: PASS** |
 | 2 — Decode + ID/EX | ✅ Corregida y verificada | **TESTBENCH ID/EX: PASS** |
 | 3 — Execute + EX/MEM | ✅ Implementada y verificada | **TESTBENCH EX/MEM: PASS** |
-| 4 — MEM/WB | ⏳ Pendiente | Writeback provisional desde EX/MEM |
-| 5 — Integración | ⏳ Pendiente | Falta MEM/WB y test con `riscvtest.dat` |
+| 4 — MEM/WB | ✅ Implementada y verificada | `memwb.v` + **TESTBENCH MEM/WB: PASS**; writeback desde `MEM_WB_*` |
+| 5 — Integración | ✅ Completada (parcial) | Cadena de 5 etapas integrada; pasa con programas sin hazards. `riscvtest.dat` requiere Fase 6 |
 | 6 — Hazards | ⏳ Pendiente | Falta forwarding y load-use |
 
 ---
@@ -137,7 +137,7 @@ PCSrc = (ID_EX_Branch & Zero) | ID_EX_Jump;
   - `flush_IF_ID = PCSrc`
   - `flush_ID_EX = PCSrc`
 - `dmem` direccionada con `EX_MEM_ALUResult`, escrita con `EX_MEM_MemWrite` y `EX_MEM_WriteData`.
-- Writeback provisional desde EX/MEM hasta que se implemente MEM/WB en la Fase 4.
+- Writeback provisional desde EX/MEM durante la Fase 3. **Ya reemplazado en la Fase 4** por el writeback real desde `MEM_WB_*`.
 
 ### Nuevos tops
 
@@ -232,15 +232,17 @@ cd data && vvp ../sim_sc
 
 ---
 
-## Siguiente paso
+## Estado tras la Fase 4
 
-La Fase 4 consiste en:
+La Fase 4 ya quedó implementada y verificada:
 
-1. Crear `src files/memwb.v`.
-2. Mover el writeback de `EX_MEM_*` a `MEM_WB_*`.
-3. Conectar `dmem.ReadData` a `MEM_WB_ReadData`.
-4. Dejar el pipeline listo para la integración de Fase 5.
+1. ✅ Creado `src files/memwb.v`.
+2. ✅ Writeback movido de `EX_MEM_*` a `MEM_WB_*`.
+3. ✅ `dmem.ReadData` conectado a `MEM_WB_ReadData`.
+4. ✅ Pipeline de 5 etapas integrado (Fase 5 parcial).
 
-Después de eso, la Fase 6 (forwarding + load-use) es la que hará pasar el `riscvtest.dat` estándar.
+Detalle completo en `doc/FASE_4_IMPLEMENTACION.md` y diagrama en
+`doc/diagrama_datapath_single_issue.drawio`.
 
-¿Sigo con la Fase 4?
+El siguiente paso es la **Fase 6** (forwarding + detección de load-use), que es la que hará pasar
+el `riscvtest.dat` estándar en el pipeline.

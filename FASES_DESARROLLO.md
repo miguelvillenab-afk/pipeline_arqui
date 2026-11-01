@@ -139,7 +139,7 @@ Cada fase debe tener una "entrega" clara antes de que la siguiente comience.
 
 ---
 
-## Estado de implementación — Etapa 1 (rama `IDEX`, 2026-11-01)
+## Estado de implementación — Etapa 1 (rama `mod-miguel`, 2026-11-01)
 
 | Fase | Estado | Evidencia / nota |
 |------|--------|------------------|
@@ -147,8 +147,8 @@ Cada fase debe tener una "entrega" clara antes de que la siguiente comience.
 | **1** | ✅ Completada y verificada | `src files/ifid.v`, `testbench/testbench_ifid.v`. Simulación: **TESTBENCH IF/ID: PASS**. |
 | **2** | ✅ Completada y verificada | `src files/idex.v`, `src files/flopenrc.v`, `testbench/tb_index.v`. Control (`maindec` + `aludec`) movido a Decode. Simulación: **TESTBENCH ID/EX: PASS**. |
 | **3** | ✅ Completada y verificada | `src files/exmem.v`, `testbench/testbench_exmem.v`, `src files/datapath_pipeline.v`. Simulación: **TESTBENCH EX/MEM: PASS**. `top_pipeline` ejecuta correctamente un programa sin hazards, incluido un branch tomado, flush de las instrucciones jóvenes y escritura de PC+4 con `jal`. |
-| **4** | ⏳ Pendiente | Falta `src files/memwb.v`. El writeback actual es provisional desde `EX_MEM_*`. |
-| **5** | ⏳ Pendiente | Falta la integración final con `MEM/WB` y el testbench con `riscvtest.dat`. |
+| **4** | ✅ Completada y verificada | `src files/memwb.v`, `testbench/testbench_memwb.v`, `src files/datapath_pipeline.v`. El writeback ahora usa `MEM_WB_*` (registro real de 5ª etapa). Simulación: **TESTBENCH MEM/WB: PASS**. El pipeline con programas sin hazards (branch tomado, `lw`/`sw`/`jal`) sigue pasando, con la separación de dependencias ajustada a la nueva etapa WB. |
+| **5** | ✅ Completada (parcial) | La cadena IF→IF/ID→ID→ID/EX→EX→EX/MEM→MEM→MEM/WB→WB está integrada en `datapath_pipeline.v` y `top_pipeline.v`. Pasa con programas sin hazards; **`riscvtest.dat` todavía no pasa** por hazards RAW/load-use (Fase 6). |
 | **6** | ⏳ Pendiente | Falta forwarding, detección de load-use y stalls. El flush de branch tomado ya quedó incluido en la Fase 3. **Sin forwarding/load-use, `riscvtest.dat` no pasa** porque contiene hazards RAW y load-use. |
 
 ### Comandos de verificación usados
@@ -158,6 +158,7 @@ Cada fase debe tener una "entrega" clara antes de que la siguiente comience.
 iverilog -g2012 -o sim_ifid  "src files/ifid.v" testbench/testbench_ifid.v
 iverilog -g2012 -o sim_idex  "src files/idex.v" "src files/flopenrc.v" testbench/tb_index.v
 iverilog -g2012 -o sim_exmem "src files/exmem.v" "src files/alu.v" "src files/mux2.v" "src files/adder.v" testbench/testbench_exmem.v
+iverilog -g2012 -o sim_memwb "src files/memwb.v" "src files/mux3.v" "src files/regfile.v" testbench/testbench_memwb.v
 iverilog -g2012 -o sim_sc    "src files"/*.v testbench/testbench.v
 ```
 

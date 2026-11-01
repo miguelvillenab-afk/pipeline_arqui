@@ -226,4 +226,6 @@ logic [1:0]  MEM_WB_ResultSrc;
 
 6. **`ID_EX_ImmSrc`** se conserva por trazabilidad/observabilidad, pero EX no lo necesita: el inmediato ya viaja extendido en `ID_EX_ImmExt`.
 
-7. **Writeback provisional de la Fase 3:** hasta que se implemente el registro MEM/WB (Fase 4), el `regfile` se escribe desde `EX_MEM_RegWrite`, `EX_MEM_rd` y el mux `EX_MEM_ResultSrc` (`ReadData` / `EX_MEM_PC4` / `EX_MEM_ALUResult`). En la Fase 4 esos puertos pasan a `MEM_WB_*`.
+7. **Writeback real (Fase 4, implementado):** el `regfile` se escribe desde `MEM_WB_RegWrite`, `MEM_WB_rd` y el mux `MEM_WB_ResultSrc` (`MEM_WB_ReadData` / `MEM_WB_PC4` / `MEM_WB_ALUResult`). El registro `MEM/WB` (`src files/memwb.v`) captura `ReadData`, `EX_MEM_ALUResult`, `EX_MEM_PC4`, `EX_MEM_rd`, `EX_MEM_RegWrite` y `EX_MEM_ResultSrc`, y no tiene `stall`/`flush`: las burbujas se insertan limpiando ID/EX.
+
+8. **Consecuencia temporal de la 5ª etapa:** al escribir el `regfile` en WB y no en MEM, una instrucción dependiente debe estar al menos **4 instrucciones después** del productor (3 NOPs de separación) para leer el valor sin forwarding. Antes de la Fase 4 bastaban 3 instrucciones. Esa separación es la que deben respetar los programas de prueba sin hazards; con forwarding/load-use (Fase 6) la restricción desaparece.

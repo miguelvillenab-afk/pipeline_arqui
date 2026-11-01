@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxfile host="app.diagrams.net" modified="2026-11-01T00:00:00.000Z" agent="opencode" version="24.7.17">
+  <diagram id="datapath_pipeline" name="Datapath Single-Issue">
+    <mxGraphModel dx="1600" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2200" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0"/>
+        <mxCell id="1" parent="0"/>
+
+        <!-- ================= TITLE ================= -->
+        <mxCell id="title" value="Datapath RISC-V single-issue — pipeline de 5 etapas (Fase 4)" style="text;html=1;fontSize=20;fontStyle=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="20" y="20" width="900" height="40" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= STAGE CONTAINERS ================= -->
+        <mxCell id="c_if" value="IF — Fetch" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="20" y="80" width="240" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ifid" value="IF/ID" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="290" y="80" width="150" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_id" value="ID — Decode" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="470" y="80" width="240" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_idex" value="ID/EX" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="740" y="80" width="160" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_ex" value="EX — Execute" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="930" y="80" width="250" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_exmem" value="EX/MEM" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="80" width="160" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_mem" value="MEM — Memory" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1400" y="80" width="200" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_memwb" value="MEM/WB" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1630" y="80" width="160" height="500" as="geometry"/>
+        </mxCell>
+        <mxCell id="c_wb" value="WB — Writeback" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#666666;verticalAlign=top;fontStyle=1;fontSize=14;" vertex="1" parent="1">
+          <mxGeometry x="1820" y="80" width="250" height="500" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= IF ================= -->
+        <mxCell id="pc" value="PC" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="160" width="90" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="imem" value="imem" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="150" y="160" width="90" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="pcadd4" value="PC + 4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="95" y="250" width="90" height="44" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= IF/ID ================= -->
+        <mxCell id="ifid_reg" value="Registro IF/ID&lt;br&gt;&lt;br&gt;IF_ID_Instr&lt;br&gt;IF_ID_PC&lt;br&gt;IF_ID_PC4" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=11;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="310" y="200" width="110" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= ID ================= -->
+        <mxCell id="maindec" value="maindec" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="490" y="150" width="200" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="aludec" value="aludec" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="490" y="220" width="200" height="52" as="geometry"/>
+        </mxCell>
+        <mxCell id="regfile" value="regfile&lt;br&gt;2 puertos de lectura" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="490" y="300" width="200" height="80" as="geometry"/>
+        </mxCell>
+        <mxCell id="extend" value="extend" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="490" y="410" width="200" height="44" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= ID/EX ================= -->
+        <mxCell id="idex_reg" value="Registro ID/EX&lt;br&gt;&lt;br&gt;SrcA&lt;br&gt;WriteData&lt;br&gt;ImmExt&lt;br&gt;PC, PC4&lt;br&gt;rs1, rs2, rd&lt;br&gt;control" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="760" y="200" width="120" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= EX ================= -->
+        <mxCell id="mux_alusrc" value="Mux ALUSrc&lt;br&gt;0: WriteData  1: ImmExt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="955" y="150" width="200" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="alu" value="ALU" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=12;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="955" y="220" width="200" height="64" as="geometry"/>
+        </mxCell>
+        <mxCell id="pcaddbranch" value="pcaddbranch&lt;br&gt;ID_EX_PC + ImmExt" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="955" y="330" width="200" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="mux_pc" value="Mux PC&lt;br&gt;0: PC+4   1: PCTarget&lt;br&gt;sel: PCSrc" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="955" y="410" width="200" height="44" as="geometry"/>
+        </mxCell>
+        <mxCell id="pcsrc" value="PCSrc = (Branch·Zero) + Jump&lt;br&gt;flush de branch (Fase 3)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="955" y="490" width="200" height="44" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= EX/MEM ================= -->
+        <mxCell id="exmem_reg" value="Registro EX/MEM&lt;br&gt;&lt;br&gt;ALUResult&lt;br&gt;Zero&lt;br&gt;WriteData&lt;br&gt;rd, PC4&lt;br&gt;PCTarget&lt;br&gt;control" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1230" y="200" width="120" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= MEM ================= -->
+        <mxCell id="dmem" value="dmem&lt;br&gt;lectura / escritura" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=11;" vertex="1" parent="1">
+          <mxGeometry x="1420" y="240" width="160" height="110" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= MEM/WB ================= -->
+        <mxCell id="memwb_reg" value="Registro MEM/WB&lt;br&gt;&lt;br&gt;ReadData&lt;br&gt;ALUResult&lt;br&gt;PC4&lt;br&gt;rd&lt;br&gt;RegWrite&lt;br&gt;ResultSrc" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;verticalAlign=middle;" vertex="1" parent="1">
+          <mxGeometry x="1650" y="200" width="120" height="220" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= WB ================= -->
+        <mxCell id="resultmux" value="resultmux (mux3)&lt;br&gt;00: ALUResult&lt;br&gt;01: ReadData&lt;br&gt;10: PC4" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1845" y="210" width="200" height="70" as="geometry"/>
+        </mxCell>
+        <mxCell id="regfile_wb" value="regfile — puerto de escritura&lt;br&gt;we3 = MEM_WB_RegWrite&lt;br&gt;a3 = MEM_WB_rd&lt;br&gt;wd3 = resultmux.y" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;fontSize=10;" vertex="1" parent="1">
+          <mxGeometry x="1845" y="340" width="200" height="80" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= PHASE 6 PENDING ================= -->
+        <mxCell id="hazard" value="Hazard Unit (Fase 6)&lt;br&gt;detección de load-use&lt;br&gt;stall_IF_ID / stall_ID_EX" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="470" y="650" width="300" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="forwarding" value="Forwarding Unit (Fase 6)&lt;br&gt;EX/MEM → EX&lt;br&gt;MEM/WB → EX" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="930" y="650" width="300" height="100" as="geometry"/>
+        </mxCell>
+        <mxCell id="legend" value="Leyenda&lt;br&gt;—— sólido: implementado y verificado&lt;br&gt;- - rojo: Fase 6 (pendiente)&lt;br&gt;—— naranja: flush de branch (Fase 3)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=11;align=left;verticalAlign=middle;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="650" width="430" height="100" as="geometry"/>
+        </mxCell>
+
+        <!-- ================= MAIN DATA PATH EDGES ================= -->
+        <mxCell id="e_pc_imem" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="pc" target="imem">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pc_add4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;" edge="1" parent="1" source="pc" target="pcadd4">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_imem_ifid" value="Instr" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.25;" edge="1" parent="1" source="imem" target="ifid_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pc_ifid" value="PC" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.8;entryX=0;entryY=0.5;" edge="1" parent="1" source="pc" target="ifid_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_add4_ifid" value="PC+4" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="pcadd4" target="ifid_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_ifid_maindec" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.2;entryX=0;entryY=0.5;" edge="1" parent="1" source="ifid_reg" target="maindec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ifid_regfile" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="ifid_reg" target="regfile">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_ifid_extend" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.8;entryX=0;entryY=0.5;" edge="1" parent="1" source="ifid_reg" target="extend">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_maindec_aludec" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.2;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="maindec" target="aludec">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_maindec_idex" value="control" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.15;" edge="1" parent="1" source="maindec" target="idex_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_aludec_idex" value="ALUControl" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.3;" edge="1" parent="1" source="aludec" target="idex_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_regfile_idex" value="SrcA / WriteData" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.55;" edge="1" parent="1" source="regfile" target="idex_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_extend_idex" value="ImmExt" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.75;" edge="1" parent="1" source="extend" target="idex_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_idex_muxb" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.25;entryX=0;entryY=0.5;" edge="1" parent="1" source="idex_reg" target="mux_alusrc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_idex_alu" value="SrcA" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.45;entryX=0;entryY=0.35;" edge="1" parent="1" source="idex_reg" target="alu">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_muxb_alu" value="SrcB" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="mux_alusrc" target="alu">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_idex_branch" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.6;entryX=0;entryY=0.5;" edge="1" parent="1" source="idex_reg" target="pcaddbranch">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_alu_exmem" value="ALUResult" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.3;" edge="1" parent="1" source="alu" target="exmem_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_branch_exmem" value="PCTarget" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.65;" edge="1" parent="1" source="pcaddbranch" target="exmem_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_idex_exmem" value="WriteData" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.85;entryX=0;entryY=0.85;" edge="1" parent="1" source="idex_reg" target="exmem_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_pcsrc_muxpc" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.2;exitX=0.5;exitY=0;entryX=0.5;entryY=1;" edge="1" parent="1" source="pcsrc" target="mux_pc">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_exmem_dmem" value="DataAdr / WriteData" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.3;entryX=0;entryY=0.5;" edge="1" parent="1" source="exmem_reg" target="dmem">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_exmem_memwb" value="ALUResult / PC4 / rd / control" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.35;" edge="1" parent="1" source="exmem_reg" target="memwb_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_dmem_memwb" value="ReadData" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.5;entryX=0;entryY=0.65;" edge="1" parent="1" source="dmem" target="memwb_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_memwb_resultmux" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.35;entryX=0;entryY=0.5;" edge="1" parent="1" source="memwb_reg" target="resultmux">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_memwb_regfile" value="we3 / a3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" edge="1" parent="1" source="memwb_reg" target="regfile_wb">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_resultmux_regfile" value="wd3" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=1.5;exitX=0.5;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="resultmux" target="regfile_wb">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <!-- PC feedback -->
+        <mxCell id="e_muxpc_pc" value="PCNext" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=2;strokeColor=#6c8ebf;exitX=1;exitY=1;entryX=0;entryY=0.5;" edge="1" parent="1" source="mux_pc" target="pc">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1195" y="610"/>
+              <mxPoint x="10" y="610"/>
+              <mxPoint x="10" y="182"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- Flush de branch (implementado) -->
+        <mxCell id="e_flush_ifid" value="flush_IF_ID" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=2;strokeColor=#d79b00;exitX=0;exitY=0.5;entryX=0.5;entryY=0;fontSize=9;" edge="1" parent="1" source="pcsrc" target="ifid_reg">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="920" y="512"/>
+              <mxPoint x="920" y="60"/>
+              <mxPoint x="365" y="60"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_flush_idex" value="flush_ID_EX" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;strokeWidth=2;strokeColor=#d79b00;exitX=1;exitY=0.5;entryX=0.5;entryY=0;fontSize=9;" edge="1" parent="1" source="pcsrc" target="idex_reg">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1195" y="512"/>
+              <mxPoint x="1195" y="48"/>
+              <mxPoint x="820" y="48"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+        <!-- ================= PHASE 6 DASHED EDGES ================= -->
+        <mxCell id="e_ifid_hazard" value="rs1 / rs2" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;dashed=1;strokeColor=#b85450;exitX=0.5;exitY=1;entryX=0.2;entryY=0;fontSize=9;" edge="1" parent="1" source="ifid_reg" target="hazard">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_idex_hazard" value="rd / MemRead" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;dashed=1;strokeColor=#b85450;exitX=0.5;exitY=1;entryX=0.8;entryY=0;fontSize=9;" edge="1" parent="1" source="idex_reg" target="hazard">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_hazard_ifid" value="stall_IF_ID" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;dashed=1;strokeColor=#b85450;exitX=0.05;exitY=0;entryX=0.25;entryY=1;fontSize=9;" edge="1" parent="1" source="hazard" target="ifid_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_hazard_idex" value="stall_ID_EX" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;dashed=1;strokeColor=#b85450;exitX=0.4;exitY=0;entryX=0.75;entryY=1;fontSize=9;" edge="1" parent="1" source="hazard" target="idex_reg">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+
+        <mxCell id="e_exmem_fwd" value="rd / RegWrite" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;dashed=1;strokeColor=#b85450;exitX=0.5;exitY=1;entryX=0.25;entryY=0;fontSize=9;" edge="1" parent="1" source="exmem_reg" target="forwarding">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_memwb_fwd" value="rd / RegWrite" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;dashed=1;strokeColor=#b85450;exitX=0.5;exitY=1;entryX=0.75;entryY=0;fontSize=9;" edge="1" parent="1" source="memwb_reg" target="forwarding">
+          <mxGeometry relative="1" as="geometry"/>
+        </mxCell>
+        <mxCell id="e_fwd_alu" value="ForwardA / ForwardB" style="edgeStyle=orthogonalEdgeStyle;endArrow=block;html=1;dashed=1;strokeColor=#b85450;exitX=0;exitY=0;entryX=0;entryY=0.5;fontSize=9;" edge="1" parent="1" source="forwarding" target="alu">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="905" y="630"/>
+              <mxPoint x="905" y="252"/>
+            </Array>
+          </mxGeometry>
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

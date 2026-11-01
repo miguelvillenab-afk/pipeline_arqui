@@ -59,7 +59,14 @@ module riscvpipeline(
         .EX_MEM_RegWrite  (),
         .EX_MEM_ResultSrc (),
         .EX_MEM_Branch    (),
-        .EX_MEM_Jump      ()
+        .EX_MEM_Jump      (),
+
+        .MEM_WB_ReadData  (),
+        .MEM_WB_ALUResult (),
+        .MEM_WB_PC4       (),
+        .MEM_WB_rd        (),
+        .MEM_WB_RegWrite  (),
+        .MEM_WB_ResultSrc ()
     );
 
 endmodule
