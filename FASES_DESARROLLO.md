@@ -136,3 +136,29 @@ Fase 0 (todos) → Fase 1 (Int. 1) → Fase 2 (Int. 2) → Fase 3 (Int. 3) → F
 ```
 
 Cada fase debe tener una "entrega" clara antes de que la siguiente comience.
+
+---
+
+## Estado de implementación — Etapa 1 (rama `IDEX`, 2026-11-01)
+
+| Fase | Estado | Evidencia / nota |
+|------|--------|------------------|
+| **0** | ✅ Completada | `contrato.md` corregido: se añadió `ID_EX_PC` (target de branch/jal), se aclaró la prioridad `reset > flush > stall` y el flush a `NOP` en IF/ID. |
+| **1** | ✅ Completada y verificada | `src files/ifid.v`, `testbench/testbench_ifid.v`. Simulación: **TESTBENCH IF/ID: PASS**. |
+| **2** | ✅ Completada y verificada | `src files/idex.v`, `src files/flopenrc.v`, `testbench/tb_index.v`. Control (`maindec` + `aludec`) movido a Decode. Simulación: **TESTBENCH ID/EX: PASS**. |
+| **3** | ✅ Completada y verificada | `src files/exmem.v`, `testbench/testbench_exmem.v`, `src files/datapath_pipeline.v`. Simulación: **TESTBENCH EX/MEM: PASS**. `top_pipeline` ejecuta correctamente un programa sin hazards, incluido un branch tomado, flush de las instrucciones jóvenes y escritura de PC+4 con `jal`. |
+| **4** | ⏳ Pendiente | Falta `src files/memwb.v`. El writeback actual es provisional desde `EX_MEM_*`. |
+| **5** | ⏳ Pendiente | Falta la integración final con `MEM/WB` y el testbench con `riscvtest.dat`. |
+| **6** | ⏳ Pendiente | Falta forwarding, detección de load-use y stalls. El flush de branch tomado ya quedó incluido en la Fase 3. **Sin forwarding/load-use, `riscvtest.dat` no pasa** porque contiene hazards RAW y load-use. |
+
+### Comandos de verificación usados
+
+```bash
+# Requiere Icarus Verilog (iverilog + vvp)
+iverilog -g2012 -o sim_ifid  "src files/ifid.v" testbench/testbench_ifid.v
+iverilog -g2012 -o sim_idex  "src files/idex.v" "src files/flopenrc.v" testbench/tb_index.v
+iverilog -g2012 -o sim_exmem "src files/exmem.v" "src files/alu.v" "src files/mux2.v" "src files/adder.v" testbench/testbench_exmem.v
+iverilog -g2012 -o sim_sc    "src files"/*.v testbench/testbench.v
+```
+
+> Nota: `imem.v` lee `riscvtest.dat` con ruta relativa; ejecutar `vvp` desde `data/` o copiar el archivo al directorio de simulación.

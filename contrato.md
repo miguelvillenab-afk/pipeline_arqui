@@ -33,7 +33,7 @@ Señales globales de control de registros:
 |-------|------------------------------|-------------|
 | `clk`, `reset` | top / testbench | Reloj y reset |
 | `stall_IF_ID` | lógica de hazard | Mantiene el valor actual |
-| `flush_IF_ID` | lógica de branch tomado | Limpia el registro |
+| `flush_IF_ID` | lógica de branch tomado | Limpia el registro insertando un NOP (`addi x0, x0, 0`) |
 | `Instr` | salida de `imem` | Instrucción de 32 bits |
 | `PC` | salida de `pcreg` (PC actual) | Dirección actual |
 | `PCPlus4` | salida de `pcadd4` | PC + 4 |
@@ -56,21 +56,22 @@ Señales globales de control de registros:
 |-------|------------------------------|-------------|
 | `clk`, `reset` | — | Reloj y reset |
 | `stall_ID_EX` | lógica de hazard | Mantiene el valor actual |
-| `flush_ID_EX` | lógica de branch tomado | Limpia señales de control |
+| `flush_ID_EX` | lógica de branch tomado | Limpia todas las señales a 0 (burbuja) |
 | `SrcA` | `rd1` del `regfile` | Valor de registro rs1 |
 | `WriteData` | `rd2` del `regfile` | Valor de registro rs2 |
 | `ImmExt` | salida de `extend` | Inmediato extendido a 32 bits |
+| `IF_ID_PC` | de IF/ID | PC de la instrucción (para target de branch/jal) |
 | `IF_ID_PC4` | de IF/ID | PC + 4 |
 | `IF_ID_Instr[19:15]` | de IF/ID | Dirección rs1 |
 | `IF_ID_Instr[24:20]` | de IF/ID | Dirección rs2 |
 | `IF_ID_Instr[11:7]` | de IF/ID | Dirección rd |
-| `ALUSrc` | salida de `controller` | Mux SrcB |
+| `ALUSrc` | salida de `maindec` | Mux SrcB |
 | `ALUControl` | salida de `aludec` | Operación ALU |
-| `RegWrite` | salida de `controller` | Habilita escritura regfile |
-| `MemWrite` | salida de `controller` | Habilita escritura dmem |
-| `ResultSrc` | salida de `controller` | Mux resultado final |
+| `RegWrite` | salida de `maindec` | Habilita escritura regfile |
+| `MemWrite` | salida de `maindec` | Habilita escritura dmem |
+| `ResultSrc` | salida de `maindec` | Mux resultado final |
 | `Branch` | salida de `maindec` | Branch condicional |
-| `Jump` | salida de `controller` | Salto incondicional |
+| `Jump` | salida de `maindec` | Salto incondicional |
 | `ImmSrc` | salida de `maindec` | Tipo de inmediato |
 
 ### Salidas (qué entrega a la etapa EX)
@@ -80,6 +81,7 @@ Señales globales de control de registros:
 | `ID_EX_SrcA` | Operando A de ALU | — |
 | `ID_EX_WriteData` | Operando B / dato para store | — |
 | `ID_EX_ImmExt` | Operando B (si ALUSrc=1) | — |
+| `ID_EX_PC` | Sumador de branch/jal | PC de la instrucción en EX |
 | `ID_EX_PC4` | Cálculo de salto `jal` | — |
 | `ID_EX_rs1` | Detección de hazards / forwarding | Dirección rs1 |
 | `ID_EX_rs2` | Detección de hazards / forwarding | Dirección rs2 |
@@ -112,14 +114,14 @@ Señales globales de control de registros:
 | `ID_EX_ResultSrc` | de ID/EX | Mux resultado final |
 | `ID_EX_Branch` | de ID/EX | Branch condicional |
 | `ID_EX_Jump` | de ID/EX | Salto incondicional |
-| Dirección de branch/jump | `pcaddbranch` / cálculo `jal` | PC destino |
+| Dirección de branch/jump | `pcaddbranch` (`ID_EX_PC + ID_EX_ImmExt`) | PC destino |
 
 ### Salidas (qué entrega a la etapa MEM)
 
 | Señal | Se conecta a | Descripción |
 |-------|--------------|-------------|
 | `EX_MEM_ALUResult` | Dirección de memoria / resultado | — |
-| `EX_MEM_Zero` | Decisión de branch tomado | — |
+| `EX_MEM_Zero` | Decisión de branch (pipelineada) / observabilidad | — |
 | `EX_MEM_WriteData` | Dato a escribir en `dmem` | — |
 | `EX_MEM_rd` | Registro destino para WB | — |
 | `EX_MEM_PC4` | Para escribir PC+4 en rd (`jal`) | — |
@@ -180,7 +182,7 @@ Señales globales de control de registros:
 logic [31:0] IF_ID_Instr, IF_ID_PC, IF_ID_PC4;
 
 // Registro ID/EX
-logic [31:0] ID_EX_SrcA, ID_EX_WriteData, ID_EX_ImmExt, ID_EX_PC4;
+logic [31:0] ID_EX_SrcA, ID_EX_WriteData, ID_EX_ImmExt, ID_EX_PC, ID_EX_PC4;
 logic [4:0]  ID_EX_rs1, ID_EX_rs2, ID_EX_rd;
 logic        ID_EX_ALUSrc, ID_EX_RegWrite, ID_EX_MemWrite;
 logic        ID_EX_Branch, ID_EX_Jump;
@@ -200,3 +202,28 @@ logic [4:0]  MEM_WB_rd;
 logic        MEM_WB_RegWrite;
 logic [1:0]  MEM_WB_ResultSrc;
 ```
+
+---
+
+## 7. Notas de implementación (acordadas al corregir Fases 1–3)
+
+1. **Prioridad de control:** `reset` > `flush` > `stall` > captura. Un `flush` inserta una burbuja aunque `stall` esté activo.
+
+2. **Flush de IF/ID:** el registro se limpia a `NOP` (`32'h0000_0013`, `addi x0, x0, 0`), no a `32'h0`. El opcode `0` cae en el `default` de `maindec` y propaga `x` por las señales de control.
+
+3. **Flush de ID/EX:** se limpian todas las señales a `0`. Es una burbuja segura porque `RegWrite=0`, `MemWrite=0`, `Branch=0` y `Jump=0`.
+
+4. **`PCSrc` no se genera en Decode.** En el pipeline la decisión se toma en EX:
+
+   ```verilog
+   PCSrc = (ID_EX_Branch & Zero) | ID_EX_Jump;
+   PCNext = PCSrc ? (ID_EX_PC + ID_EX_ImmExt) : (PC + 4);
+   ```
+
+   Por eso `ID_EX_PC` se añadió al contrato: el target debe calcularse con el PC de la instrucción que está en EX, no con `IF_ID_PC` (que pertenece a otra instrucción).
+
+5. **`EX_MEM_Zero`** se conserva y se pipelinea para una eventual decisión de branch en MEM. En la implementación actual la decisión se toma en EX con `Zero`, por lo que `EX_MEM_Zero` queda disponible para observabilidad y para futuras fases.
+
+6. **`ID_EX_ImmSrc`** se conserva por trazabilidad/observabilidad, pero EX no lo necesita: el inmediato ya viaja extendido en `ID_EX_ImmExt`.
+
+7. **Writeback provisional de la Fase 3:** hasta que se implemente el registro MEM/WB (Fase 4), el `regfile` se escribe desde `EX_MEM_RegWrite`, `EX_MEM_rd` y el mux `EX_MEM_ResultSrc` (`ReadData` / `EX_MEM_PC4` / `EX_MEM_ALUResult`). En la Fase 4 esos puertos pasan a `MEM_WB_*`.
