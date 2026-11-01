@@ -13,7 +13,7 @@
 // de las dos cosas.
 //////////////////////////////////////////////////////////////////////////////////
 
-module flopenrc(
+module flopenrc #(parameter WIDTH = 8) (
     input  clk,
     input  reset,
     input  en,
@@ -21,8 +21,6 @@ module flopenrc(
     input  [WIDTH-1:0] d,
     output reg [WIDTH-1:0] q
     );
-
-    parameter WIDTH = 8;
 
     always @(posedge clk or posedge reset) begin
         if (reset)

@@ -81,9 +81,11 @@ module datapath_pipeline(
     // Resultado de writeback
     wire [31:0] wb_Result;
 
-    flopr #(WIDTH) pcreg (
+    flopenrc #(WIDTH) pcreg (
         .clk   (clk),
         .reset (reset),
+        .en    (~stall_ifid_hz),
+        .clr   (1'b0),           
         .d     (PCNext),
         .q     (PC)
     );
@@ -95,14 +97,12 @@ module datapath_pipeline(
     );
 
     // ------------------------------------------------------------- IF/ID
-    wire flush_if_id;
-    wire flush_id_ex;
 
     ifid reg_ifid (
         .clk        (clk),
         .reset      (reset),
-        .stall      (1'b0),          // Fase 6: unidad de hazards
-        .flush      (flush_if_id),
+        .stall      (stall_ifid_hz),          // Fase 6: unidad de hazards
+        .flush      (flush_ifid_hz),
         .Instr_in   (Instr),
         .PC_in      (PC),
         .PC4_in     (PCPlus4),
@@ -117,6 +117,12 @@ module datapath_pipeline(
     wire [1:0] dec_ResultSrc, dec_ImmSrc, dec_ALUOp;
     wire       dec_MemWrite, dec_Branch, dec_ALUSrc, dec_RegWrite, dec_Jump;
     wire [2:0] dec_ALUControl;
+
+
+    //Para instanciar Hazard Unit
+    wire stall_ifid_hz, stall_idex_hz;
+    wire flush_ifid_hz, flush_idex_hz;
+    wire [1:0] ForwardA, ForwardB;
 
     // El control se decodifica con la instrucción que está en ID (IF_ID_Instr),
     // NO con la instrucción que está saliendo de imem.
@@ -162,8 +168,8 @@ module datapath_pipeline(
     idex reg_idex (
         .clk           (clk),
         .reset         (reset),
-        .stall_ID_EX   (1'b0),        // Fase 6: unidad de hazards
-        .flush_ID_EX   (flush_id_ex),
+        .stall_ID_EX   (stall_idex_hz),        // Fase 6: unidad de hazards
+        .flush_ID_EX   (flush_idex_hz),
 
         .SrcA          (id_SrcA),
         .WriteData     (id_WriteData),
@@ -205,6 +211,9 @@ module datapath_pipeline(
     wire [31:0] ex_SrcB, ex_ALUResult, ex_PCTarget;
     wire        ex_Zero, ex_PCSrc;
 
+    // Cables para las salidas de los muxes de forwarding
+    wire [31:0] alu_SrcA_fwd, alu_SrcB_fwd;
+
     mux2 #(WIDTH) srcbmux (
         .d0 (ID_EX_WriteData),
         .d1 (ID_EX_ImmExt),
@@ -212,9 +221,27 @@ module datapath_pipeline(
         .y  (ex_SrcB)
     );
 
+    // Mux de Forwarding para el Operando A (rs1)
+    mux3 #(WIDTH) mux_forwardA (
+        .d0 (ID_EX_SrcA),           // 00: Dato original del registro
+        .d1 (wb_Result),            // 01: Dato desde MEM/WB
+        .d2 (EX_MEM_ALUResult),     // 10: Dato desde EX/MEM
+        .s  (ForwardA),
+        .y  (alu_SrcA_fwd)
+    );
+
+    // Mux de Forwarding para el Operando B (rs2)
+    mux3 #(WIDTH) mux_forwardB (
+        .d0 (ex_SrcB),              // 00: Dato original (ya sea del registro o del inmediato)
+        .d1 (wb_Result),            // 01: Dato desde MEM/WB
+        .d2 (EX_MEM_ALUResult),     // 10: Dato desde EX/MEM
+        .s  (ForwardB),
+        .y  (alu_SrcB_fwd)
+    );
+
     alu alu (
-        .a          (ID_EX_SrcA),
-        .b          (ex_SrcB),
+        .a          (alu_SrcA_fwd),
+        .b          (alu_SrcB_fwd),
         .alucontrol (ID_EX_ALUControl),
         .result     (ex_ALUResult),
         .zero       (ex_Zero)
@@ -236,10 +263,6 @@ module datapath_pipeline(
         .y  (PCNext)
     );
 
-    // Un branch/jal tomado en EX invalida las dos instrucciones más jóvenes:
-    // la que está en IF/ID y la que está entrando a ID/EX.
-    assign flush_if_id = ex_PCSrc;
-    assign flush_id_ex = ex_PCSrc;
 
     // ------------------------------------------------------------ EX/MEM
     exmem reg_exmem (
@@ -285,6 +308,35 @@ module datapath_pipeline(
         .MEM_WB_rd         (MEM_WB_rd),
         .MEM_WB_RegWrite   (MEM_WB_RegWrite),
         .MEM_WB_ResultSrc  (MEM_WB_ResultSrc)
+    );
+
+
+    hazard_unit hu (
+        // Entradas de ID
+        .rs1_ID(IF_ID_Instr[19:15]),
+        .rs2_ID(IF_ID_Instr[24:20]),
+        
+        // Entradas de EX (desde tu registro idex)
+        .rs1_EX(ID_EX_rs1),
+        .rs2_EX(ID_EX_rs2),
+        .rd_EX(ID_EX_rd),
+        .ResultSrc_EX(ID_EX_ResultSrc), // <-- Conectado aquí
+        .RegWrite_EX(ID_EX_RegWrite),   // <-- Conectado aquí
+        
+        // Entradas de MEM (desde tu registro exmem)
+        .rd_MEM(EX_MEM_rd),
+        .RegWrite_MEM(EX_MEM_RegWrite), // <-- Conectado aquí
+        
+        // Entrada de Branch
+        .PCSrc_EX(ex_PCSrc),
+        
+        // Salidas
+        .stall_IF_ID(stall_ifid_hz),
+        .stall_ID_EX(stall_idex_hz),
+        .flush_IF_ID(flush_ifid_hz),
+        .flush_ID_EX(flush_idex_hz),
+        .ForwardA(ForwardA),
+        .ForwardB(ForwardB)
     );
 
     // ---------------------------------------------------------------- WB
