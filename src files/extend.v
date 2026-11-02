@@ -14,6 +14,6 @@ module extend(input  [31:7] instr,
       2'b10:   immext_reg = {{20{instr[31]}}, instr[7], instr[30:25], instr[11:8], 1'b0}; 
                // J-type (jal)
       2'b11:   immext_reg = {{12{instr[31]}}, instr[19:12], instr[20], instr[30:21], 1'b0}; 
-      default: immext_reg = 32'bx; // undefined
+      default: immext_reg = 32'b0; // undefined
     endcase             
 endmodule

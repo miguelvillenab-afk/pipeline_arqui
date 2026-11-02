@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_top_pipeline_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_top_pipeline" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="62.920 ns"></ZoomStartTime>
+      <ZoomEndTime time="99.531 ns"></ZoomEndTime>
+      <Cursor1Time time="119.170 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="169"></NameColumnWidth>
+      <ValueColumnWidth column_width="138"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="22" />
+   <wvobject fp_name="/tb_top_pipeline/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/PC" type="array">
+      <obj_property name="ElementShortName">PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/stall_ifid_hz" type="logic">
+      <obj_property name="ElementShortName">stall_ifid_hz</obj_property>
+      <obj_property name="ObjectShortName">stall_ifid_hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/stall_idex_hz" type="logic">
+      <obj_property name="ElementShortName">stall_idex_hz</obj_property>
+      <obj_property name="ObjectShortName">stall_idex_hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/flush_ifid_hz" type="logic">
+      <obj_property name="ElementShortName">flush_ifid_hz</obj_property>
+      <obj_property name="ObjectShortName">flush_ifid_hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/flush_idex_hz" type="logic">
+      <obj_property name="ElementShortName">flush_idex_hz</obj_property>
+      <obj_property name="ObjectShortName">flush_idex_hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/id_SrcA" type="array">
+      <obj_property name="ElementShortName">id_SrcA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">id_SrcA[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_SrcA" type="array">
+      <obj_property name="ElementShortName">ID_EX_SrcA[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_SrcA[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcA_fwd" type="array">
+      <obj_property name="ElementShortName">alu_SrcA_fwd[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcA_fwd[31:0]</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcB_fwd" type="array">
+      <obj_property name="ElementShortName">alu_SrcB_fwd[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcB_fwd[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_ALUResult" type="array">
+      <obj_property name="ElementShortName">ex_ALUResult[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_ALUResult[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/rf/rf" type="array">
+      <obj_property name="ElementShortName">rf[0:31][31:0]</obj_property>
+      <obj_property name="ObjectShortName">rf[0:31][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/Instr" type="array">
+      <obj_property name="ElementShortName">Instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/MEM_WB_RegWrite" type="logic">
+      <obj_property name="ElementShortName">MEM_WB_RegWrite</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_RegWrite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/MEM_WB_rd" type="array">
+      <obj_property name="ElementShortName">MEM_WB_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_rd[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/wb_Result" type="array">
+      <obj_property name="ElementShortName">wb_Result[31:0]</obj_property>
+      <obj_property name="ObjectShortName">wb_Result[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/IF_ID_Instr" type="array">
+      <obj_property name="ElementShortName">IF_ID_Instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">IF_ID_Instr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/dec_RegWrite" type="logic">
+      <obj_property name="ElementShortName">dec_RegWrite</obj_property>
+      <obj_property name="ObjectShortName">dec_RegWrite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_RegWrite" type="logic">
+      <obj_property name="ElementShortName">ID_EX_RegWrite</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_RegWrite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ext/immext" type="array">
+      <obj_property name="ElementShortName">immext[31:0]</obj_property>
+      <obj_property name="ObjectShortName">immext[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/md/ImmSrc" type="array">
+      <obj_property name="ElementShortName">ImmSrc[1:0]</obj_property>
+      <obj_property name="ObjectShortName">ImmSrc[1:0]</obj_property>
+   </wvobject>
+</wave_config>

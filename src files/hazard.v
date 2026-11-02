@@ -7,7 +7,7 @@ module hazard_unit (
     input [4:0] rd_EX, rd_MEM,         // Registros destino de las etapas EX y MEM
     
     // Señales de control para saber si la instrucción escribe en registro y de dónde trae el dato
-    input       ResultSrc_EX,          // 1 si la instrucción en EX es un lw (espera dato de memoria)
+    input[1:0]  ResultSrc_EX,          // 1 si la instrucción en EX es un lw (espera dato de memoria)
     input       RegWrite_EX,           // 1 si la instrucción en EX va a escribir en el regfile
     input       RegWrite_MEM,          // 1 si la instrucción en MEM va a escribir en el regfile
     input       PCSrc_EX,              // 1 si se tomó un branch/jump en EX
