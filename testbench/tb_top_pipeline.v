@@ -26,7 +26,7 @@ module tb_top_pipeline();
         #20;
         reset = 0;
 
-        #500; 
+        #5000; 
 
         $finish;
     end

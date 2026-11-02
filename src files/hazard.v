@@ -39,13 +39,13 @@ module hazard_unit (
         if (lw_stall) begin
             stall_IF_ID = 1;  // Congela Fetch (PC y la instrucción en IF/ID)
             stall_ID_EX = 1;  // Congela los datos que iban a pasar de ID a EX
-            flush_ID_EX = 1;  // Limpia el registro ID/EX para inyectar un NOP en EX
+            //flush_ID_EX = 1;  // Limpia el registro ID/EX para inyectar un NOP en EX
         end
         
         // 2. Evaluar Branch (si no hay stall). Si el salto se tomó, limpia las instrucciones erróneas.
         else if (PCSrc_EX) begin
             flush_IF_ID = 1;
-            flush_ID_EX = 1;
+            //flush_ID_EX = 1;
         end
         
         // 3. Forwarding desde EX/MEM (Prioridad alta)

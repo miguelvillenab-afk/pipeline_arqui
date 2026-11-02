@@ -149,6 +149,7 @@ module datapath_pipeline(
     // El puerto de escritura usa el resultado y el rd que salen de MEM/WB.
     regfile rf (
         .clk (clk),
+        .reset (reset),
         .we3 (MEM_WB_RegWrite),
         .a1  (IF_ID_Instr[19:15]),
         .a2  (IF_ID_Instr[24:20]),
