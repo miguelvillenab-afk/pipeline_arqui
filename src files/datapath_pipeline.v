@@ -1,39 +1,17 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// datapath_pipeline.v
-//
-// Datapath del procesador RISC-V de 5 etapas:
-//
-//   IF -> IF/ID -> ID -> ID/EX -> EX -> EX/MEM -> MEM -> MEM/WB -> WB
-//
-// Implementado hasta la Fase 4:
-//   - Fase 1: PC, imem (desde top_pipeline), PC+4 y registro IF/ID.
-//   - Fase 2: decodificación (maindec + aludec) en ID, regfile, extend y
-//             registro ID/EX con stall/flush reales.
-//   - Fase 3: ALU, mux ALUSrc, sumador de branch/jal y registro EX/MEM.
-//   - Fase 4: registro MEM/WB y writeback real desde MEM_WB_* al regfile.
-//
-// Todavía NO incluye forwarding ni detección de load-use (Fase 6).
-//////////////////////////////////////////////////////////////////////////////////
 
 module datapath_pipeline(
     input  clk,
     input  reset,
-
-    // Interfaz con memorias / top
     output [31:0] PC,
     input  [31:0] Instr,
     output        MemWrite,
     output [31:0] DataAdr,
     output [31:0] WriteData,
     input  [31:0] ReadData,
-
-    // Observabilidad Fase 1
     output [31:0] IF_ID_Instr,
     output [31:0] IF_ID_PC,
     output [31:0] IF_ID_PC4,
-
-    // Observabilidad Fase 2
     output [31:0] ID_EX_SrcA,
     output [31:0] ID_EX_WriteData,
     output [31:0] ID_EX_ImmExt,
@@ -50,8 +28,6 @@ module datapath_pipeline(
     output        ID_EX_Branch,
     output        ID_EX_Jump,
     output [1:0]  ID_EX_ImmSrc,
-
-    // Observabilidad Fase 3
     output [31:0] EX_MEM_ALUResult,
     output        EX_MEM_Zero,
     output [31:0] EX_MEM_WriteData,
@@ -63,8 +39,6 @@ module datapath_pipeline(
     output [1:0]  EX_MEM_ResultSrc,
     output        EX_MEM_Branch,
     output        EX_MEM_Jump,
-
-    // Observabilidad Fase 4
     output [31:0] MEM_WB_ReadData,
     output [31:0] MEM_WB_ALUResult,
     output [31:0] MEM_WB_PC4,
@@ -74,11 +48,7 @@ module datapath_pipeline(
     );
 
     localparam WIDTH = 32;
-
-    // ---------------------------------------------------------------- IF
     wire [31:0] PCNext, PCPlus4;
-
-    // Resultado de writeback
     wire [31:0] wb_Result;
 
     flopenrc #(WIDTH) pcreg (
@@ -96,12 +66,10 @@ module datapath_pipeline(
         .y (PCPlus4)
     );
 
-    // ------------------------------------------------------------- IF/ID
-
     ifid reg_ifid (
         .clk        (clk),
         .reset      (reset),
-        .stall      (stall_ifid_hz),          // Fase 6: unidad de hazards
+        .stall      (stall_ifid_hz),
         .flush      (flush_ifid_hz),
         .Instr_in   (Instr),
         .PC_in      (PC),
@@ -111,21 +79,15 @@ module datapath_pipeline(
         .IF_ID_PC4  (IF_ID_PC4)
     );
 
-    // ---------------------------------------------------------------- ID
     wire [31:0] id_SrcA, id_WriteData, ImmExt;
-
     wire [1:0] dec_ResultSrc, dec_ImmSrc, dec_ALUOp;
     wire       dec_MemWrite, dec_Branch, dec_ALUSrc, dec_RegWrite, dec_Jump;
     wire [2:0] dec_ALUControl;
 
-
-    //Para instanciar Hazard Unit
     wire stall_ifid_hz, stall_idex_hz;
     wire flush_ifid_hz, flush_idex_hz;
-    wire [1:0] ForwardA, ForwardB;
+    wire [1:0] ForwardA, ForwardB, ForwardC;
 
-    // El control se decodifica con la instrucción que está en ID (IF_ID_Instr),
-    // NO con la instrucción que está saliendo de imem.
     maindec md (
         .op        (IF_ID_Instr[6:0]),
         .ResultSrc (dec_ResultSrc),
@@ -146,32 +108,29 @@ module datapath_pipeline(
         .ALUControl (dec_ALUControl)
     );
 
-    // El puerto de escritura usa el resultado y el rd que salen de MEM/WB.
     regfile rf (
-        .clk (clk),
+        .clk   (clk),
         .reset (reset),
-        .we3 (MEM_WB_RegWrite),
-        .a1  (IF_ID_Instr[19:15]),
-        .a2  (IF_ID_Instr[24:20]),
-        .a3  (MEM_WB_rd),
-        .wd3 (wb_Result),
-        .rd1 (id_SrcA),
-        .rd2 (id_WriteData)
+        .we3   (MEM_WB_RegWrite),
+        .a1    (IF_ID_Instr[19:15]),
+        .a2    (IF_ID_Instr[24:20]),
+        .a3    (MEM_WB_rd),
+        .wd3   (wb_Result),
+        .rd1   (id_SrcA),
+        .rd2   (id_WriteData)
     );
 
     extend ext (
-        .instr  (IF_ID_Instr[31:7]),
+        .instr  (IF_ID_Instr),
         .immsrc (dec_ImmSrc),
         .immext (ImmExt)
     );
 
-    // ------------------------------------------------------------- ID/EX
     idex reg_idex (
         .clk           (clk),
         .reset         (reset),
-        .stall_ID_EX   (stall_idex_hz),        // Fase 6: unidad de hazards
+        .stall_ID_EX   (stall_idex_hz),
         .flush_ID_EX   (flush_idex_hz),
-
         .SrcA          (id_SrcA),
         .WriteData     (id_WriteData),
         .ImmExt        (ImmExt),
@@ -180,7 +139,6 @@ module datapath_pipeline(
         .rs1           (IF_ID_Instr[19:15]),
         .rs2           (IF_ID_Instr[24:20]),
         .rd            (IF_ID_Instr[11:7]),
-
         .ALUSrc        (dec_ALUSrc),
         .ALUControl    (dec_ALUControl),
         .RegWrite      (dec_RegWrite),
@@ -189,7 +147,6 @@ module datapath_pipeline(
         .Branch        (dec_Branch),
         .Jump          (dec_Jump),
         .ImmSrc        (dec_ImmSrc),
-
         .ID_EX_SrcA       (ID_EX_SrcA),
         .ID_EX_WriteData  (ID_EX_WriteData),
         .ID_EX_ImmExt     (ID_EX_ImmExt),
@@ -208,12 +165,9 @@ module datapath_pipeline(
         .ID_EX_ImmSrc     (ID_EX_ImmSrc)
     );
 
-    // ---------------------------------------------------------------- EX
     wire [31:0] ex_SrcB, ex_ALUResult, ex_PCTarget;
     wire        ex_Zero, ex_PCSrc;
-
-    // Cables para las salidas de los muxes de forwarding
-    wire [31:0] alu_SrcA_fwd, alu_SrcB_fwd;
+    wire [31:0] alu_SrcA_fwd, alu_SrcB_fwd, writeData_fwd;
 
     mux2 #(WIDTH) srcbmux (
         .d0 (ID_EX_WriteData),
@@ -222,22 +176,28 @@ module datapath_pipeline(
         .y  (ex_SrcB)
     );
 
-    // Mux de Forwarding para el Operando A (rs1)
     mux3 #(WIDTH) mux_forwardA (
-        .d0 (ID_EX_SrcA),           // 00: Dato original del registro
-        .d1 (wb_Result),            // 01: Dato desde MEM/WB
-        .d2 (EX_MEM_ALUResult),     // 10: Dato desde EX/MEM
+        .d0 (ID_EX_SrcA),
+        .d1 (wb_Result),
+        .d2 (EX_MEM_ALUResult),
         .s  (ForwardA),
         .y  (alu_SrcA_fwd)
     );
 
-    // Mux de Forwarding para el Operando B (rs2)
     mux3 #(WIDTH) mux_forwardB (
-        .d0 (ex_SrcB),              // 00: Dato original (ya sea del registro o del inmediato)
-        .d1 (wb_Result),            // 01: Dato desde MEM/WB
-        .d2 (EX_MEM_ALUResult),     // 10: Dato desde EX/MEM
+        .d0 (ex_SrcB),
+        .d1 (wb_Result),
+        .d2 (EX_MEM_ALUResult),
         .s  (ForwardB),
         .y  (alu_SrcB_fwd)
+    );
+
+    mux3 #(WIDTH) mux_forwardC (
+        .d0 (ID_EX_WriteData),
+        .d1 (wb_Result),
+        .d2 (EX_MEM_ALUResult),
+        .s  (ForwardC),
+        .y  (writeData_fwd)
     );
 
     alu alu (
@@ -248,7 +208,6 @@ module datapath_pipeline(
         .zero       (ex_Zero)
     );
 
-    // PC de la instrucción en EX + inmediato -> destino de branch/jal.
     adder pcaddbranch (
         .a (ID_EX_PC),
         .b (ID_EX_ImmExt),
@@ -264,14 +223,12 @@ module datapath_pipeline(
         .y  (PCNext)
     );
 
-
-    // ------------------------------------------------------------ EX/MEM
     exmem reg_exmem (
         .clk             (clk),
         .reset           (reset),
         .ALUResult       (ex_ALUResult),
         .Zero            (ex_Zero),
-        .WriteData       (ID_EX_WriteData),
+        .WriteData       (writeData_fwd),
         .rd              (ID_EX_rd),
         .PC4             (ID_EX_PC4),
         .PCTarget        (ex_PCTarget),
@@ -293,7 +250,6 @@ module datapath_pipeline(
         .EX_MEM_Jump     (EX_MEM_Jump)
     );
 
-    // ------------------------------------------------------------ MEM/WB
     memwb reg_memwb (
         .clk               (clk),
         .reset             (reset),
@@ -311,36 +267,29 @@ module datapath_pipeline(
         .MEM_WB_ResultSrc  (MEM_WB_ResultSrc)
     );
 
-
     hazard_unit hu (
-        // Entradas de ID
-        .rs1_ID(IF_ID_Instr[19:15]),
-        .rs2_ID(IF_ID_Instr[24:20]),
-        
-        // Entradas de EX (desde tu registro idex)
-        .rs1_EX(ID_EX_rs1),
-        .rs2_EX(ID_EX_rs2),
-        .rd_EX(ID_EX_rd),
-        .ResultSrc_EX(ID_EX_ResultSrc), // <-- Conectado aquí
-        .RegWrite_EX(ID_EX_RegWrite),   // <-- Conectado aquí
-        
-        // Entradas de MEM (desde tu registro exmem)
-        .rd_MEM(EX_MEM_rd),
-        .RegWrite_MEM(EX_MEM_RegWrite), // <-- Conectado aquí
-        
-        // Entrada de Branch
-        .PCSrc_EX(ex_PCSrc),
-        
-        // Salidas
-        .stall_IF_ID(stall_ifid_hz),
-        .stall_ID_EX(stall_idex_hz),
-        .flush_IF_ID(flush_ifid_hz),
-        .flush_ID_EX(flush_idex_hz),
-        .ForwardA(ForwardA),
-        .ForwardB(ForwardB)
+        .rs1_ID        (IF_ID_Instr[19:15]),
+        .rs2_ID        (IF_ID_Instr[24:20]),
+        .rs1_EX        (ID_EX_rs1),
+        .rs2_EX        (ID_EX_rs2),
+        .rd_EX         (ID_EX_rd),
+        .ResultSrc_EX  (ID_EX_ResultSrc),
+        .RegWrite_EX   (ID_EX_RegWrite),
+        .rd_MEM        (EX_MEM_rd),
+        .RegWrite_MEM  (EX_MEM_RegWrite),
+        .rd_WB         (MEM_WB_rd),
+        .RegWrite_WB   (MEM_WB_RegWrite),
+        .ALUSrc_EX     (ID_EX_ALUSrc),
+        .PCSrc_EX      (ex_PCSrc),
+        .stall_IF_ID   (stall_ifid_hz),
+        .stall_ID_EX   (stall_idex_hz),
+        .flush_IF_ID   (flush_ifid_hz),
+        .flush_ID_EX   (flush_idex_hz),
+        .ForwardA      (ForwardA),
+        .ForwardB      (ForwardB),
+        .ForwardC      (ForwardC)
     );
 
-    // ---------------------------------------------------------------- WB
     assign DataAdr   = EX_MEM_ALUResult;
     assign MemWrite  = EX_MEM_MemWrite;
     assign WriteData = EX_MEM_WriteData;
