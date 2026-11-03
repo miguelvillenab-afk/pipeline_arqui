@@ -87,7 +87,7 @@ module datapath_dual(
 
     wire stall_ifid_hz, stall_idex_hz;
     wire flush_ifid_hz, flush_idex_hz;
-    wire [1:0] ForwardA, ForwardB;
+    wire [1:0] ForwardA, ForwardB, ForwardC;
 
     flopenrc #(WIDTH) pcreg (
         .clk   (clk),
@@ -192,7 +192,7 @@ module datapath_dual(
     );
 
     extend ext (
-        .instr  (IF_ID_Instr[31:7]),
+        .instr  (IF_ID_Instr),
         .immsrc (dec_ImmSrc),
         .immext (ImmExt)
     );
@@ -225,7 +225,7 @@ module datapath_dual(
     );
 
     extend ext_b (
-        .instr  (IF_ID_Instr_B[31:7]),
+        .instr  (IF_ID_Instr_B),
         .immsrc (dec_B_ImmSrc),
         .immext (ID_B_ImmExt)
     );
@@ -288,7 +288,7 @@ module datapath_dual(
     wire [31:0] ex_SrcB, ex_ALUResult, ex_PCTarget;
     wire        ex_Zero, ex_PCSrc;
 
-    wire [31:0] alu_SrcA_fwd, alu_SrcB_fwd;
+    wire [31:0] alu_SrcA_fwd, alu_SrcB_fwd, writeData_fwd;
 
     mux2 #(WIDTH) srcbmux (
         .d0 (ID_EX_WriteData),
@@ -311,6 +311,15 @@ module datapath_dual(
         .d2 (EX_MEM_ALUResult),
         .s  (ForwardB),
         .y  (alu_SrcB_fwd)
+    );
+
+    // Dato de store: rs2 sin pasar por ALUSrc
+    mux3 #(WIDTH) mux_forwardC (
+        .d0 (ID_EX_WriteData),
+        .d1 (wb_Result),
+        .d2 (EX_MEM_ALUResult),
+        .s  (ForwardC),
+        .y  (writeData_fwd)
     );
 
     alu alu (
@@ -343,7 +352,7 @@ module datapath_dual(
         .reset            (reset),
         .ALUResult        (ex_ALUResult),
         .Zero             (ex_Zero),
-        .WriteData        (ID_EX_WriteData),
+        .WriteData        (writeData_fwd),
         .rd               (ID_EX_rd),
         .PC4              (ID_EX_PC4),
         .PCTarget         (ex_PCTarget),
@@ -397,6 +406,10 @@ module datapath_dual(
         .rd_MEM        (EX_MEM_rd),
         .RegWrite_MEM  (EX_MEM_RegWrite),
 
+        .rd_WB         (MEM_WB_rd),
+        .RegWrite_WB   (MEM_WB_RegWrite),
+        .ALUSrc_EX     (ID_EX_ALUSrc),
+
         .PCSrc_EX      (ex_PCSrc),
 
         .stall_IF_ID   (stall_ifid_hz),
@@ -404,7 +417,8 @@ module datapath_dual(
         .flush_IF_ID   (flush_ifid_hz),
         .flush_ID_EX   (flush_idex_hz),
         .ForwardA      (ForwardA),
-        .ForwardB      (ForwardB)
+        .ForwardB      (ForwardB),
+        .ForwardC      (ForwardC)
     );
 
     // WB
