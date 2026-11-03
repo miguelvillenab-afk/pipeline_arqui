@@ -39,6 +39,24 @@ module datapath_dual(
     output        ID_B_Branch,
     output        ID_B_Jump,
 
+    // Salidas del registro ID/EX de la vía B
+    output [31:0] ID_EX_B_SrcA,
+    output [31:0] ID_EX_B_WriteData,
+    output [31:0] ID_EX_B_ImmExt,
+    output [31:0] ID_EX_B_PC,
+    output [31:0] ID_EX_B_PC4,
+    output [4:0]  ID_EX_B_rs1,
+    output [4:0]  ID_EX_B_rs2,
+    output [4:0]  ID_EX_B_rd,
+    output        ID_EX_B_ALUSrc,
+    output [2:0]  ID_EX_B_ALUControl,
+    output        ID_EX_B_RegWrite,
+    output        ID_EX_B_MemWrite,
+    output [1:0]  ID_EX_B_ResultSrc,
+    output        ID_EX_B_Branch,
+    output        ID_EX_B_Jump,
+    output [1:0]  ID_EX_B_ImmSrc,
+
     //señales ya decodificado 
     output [31:0] ID_EX_SrcA,
     output [31:0] ID_EX_WriteData,
@@ -282,6 +300,49 @@ module datapath_dual(
         .ID_EX_Branch     (ID_EX_Branch),
         .ID_EX_Jump       (ID_EX_Jump),
         .ID_EX_ImmSrc     (ID_EX_ImmSrc)
+    );
+
+    // ID/EX de la vía B: guarda los operandos y controles decodificados de B.
+    idex reg_idex_b (
+        .clk              (clk),
+        .reset            (reset),
+        .stall_ID_EX      (stall_idex_hz),
+        .flush_ID_EX      (flush_idex_hz),
+
+        .SrcA             (ID_B_SrcA),
+        .WriteData        (ID_B_WriteData),
+        .ImmExt           (ID_B_ImmExt),
+        .IF_ID_PC         (IF_ID_PC_B),
+        .IF_ID_PC4        (IF_ID_PC4_B),
+        .rs1              (ID_B_rs1),
+        .rs2              (ID_B_rs2),
+        .rd               (ID_B_rd),
+
+        .ALUSrc           (ID_B_ALUSrc),
+        .ALUControl       (ID_B_ALUControl),
+        .RegWrite         (ID_B_RegWrite),
+        .MemWrite         (ID_B_MemWrite),
+        .ResultSrc        (ID_B_ResultSrc),
+        .Branch           (ID_B_Branch),
+        .Jump             (ID_B_Jump),
+        .ImmSrc           (dec_B_ImmSrc),
+
+        .ID_EX_SrcA       (ID_EX_B_SrcA),
+        .ID_EX_WriteData  (ID_EX_B_WriteData),
+        .ID_EX_ImmExt     (ID_EX_B_ImmExt),
+        .ID_EX_PC         (ID_EX_B_PC),
+        .ID_EX_PC4        (ID_EX_B_PC4),
+        .ID_EX_rs1        (ID_EX_B_rs1),
+        .ID_EX_rs2        (ID_EX_B_rs2),
+        .ID_EX_rd         (ID_EX_B_rd),
+        .ID_EX_ALUSrc     (ID_EX_B_ALUSrc),
+        .ID_EX_ALUControl (ID_EX_B_ALUControl),
+        .ID_EX_RegWrite   (ID_EX_B_RegWrite),
+        .ID_EX_MemWrite   (ID_EX_B_MemWrite),
+        .ID_EX_ResultSrc  (ID_EX_B_ResultSrc),
+        .ID_EX_Branch     (ID_EX_B_Branch),
+        .ID_EX_Jump       (ID_EX_B_Jump),
+        .ID_EX_ImmSrc     (ID_EX_B_ImmSrc)
     );
 
     // EX
