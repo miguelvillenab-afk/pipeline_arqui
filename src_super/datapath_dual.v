@@ -168,12 +168,12 @@ module datapath_dual(
         .clk    (clk),
         .reset  (reset),
 
-        // Escritura vía A (la única activa en esta sub-etapa)
+        // Escritura vía A 
         .we3_A  (MEM_WB_RegWrite),
         .a3_A   (MEM_WB_rd),
         .wd3_A  (wb_Result),
 
-        // Escritura vía B (deshabilitada todavía)
+        // Escritura vía B off
         .we3_B  (1'b0),
         .a3_B   (5'd0),
         .wd3_B  (32'd0),
@@ -199,7 +199,7 @@ module datapath_dual(
 
     //decode de B: DUAL DECODE
     // Se decodifica la instrucción B en paralelo
-    // señales solo se exponen para observación; no llegan a EX.
+    // señales solo se exponen para observación, no llegan a EX, NAIDE LAS USA.
     wire [1:0] dec_B_ResultSrc, dec_B_ImmSrc, dec_B_ALUOp;
     wire       dec_B_MemWrite, dec_B_Branch, dec_B_ALUSrc, dec_B_RegWrite, dec_B_Jump;
     wire [2:0] dec_B_ALUControl;
@@ -329,7 +329,7 @@ module datapath_dual(
 
     assign ex_PCSrc = (ID_EX_Branch & ex_Zero) | ID_EX_Jump;
 
-    // Sub-etapa 1: solo se ejecuta A, por eso PCNext = PC+4.
+    // solo se ejecuta A
     mux2 #(WIDTH) pcmux (
         .d0 (PCPlus4),
         .d1 (ex_PCTarget),

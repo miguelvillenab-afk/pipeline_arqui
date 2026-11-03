@@ -10,7 +10,7 @@ module imem_dual(
     reg [31:0] RAM [63:0];
     
     initial begin 
-        $readmemh("program4.mem", RAM);
+        $readmemh("program1.mem", RAM);
     end
     
     assign rd0 = RAM[a0[31:2]];
