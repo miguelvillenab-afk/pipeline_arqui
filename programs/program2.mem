@@ -1,0 +1,8 @@
+// Programa 2 - Dependencias RAW resueltas por Forwarding
+00a00093  // 00: addi x1, x0, 10      ; x1 = 10
+00108133  // 04: add  x2, x1, x1      ; x2 = x1 + x1 = 20  (Depende de x1. Forwarding EX/MEM -> EX)
+401101b3  // 08: sub  x3, x2, x1      ; x3 = x2 - x1 = 10  (Depende de x2. Forwarding EX/MEM -> EX)
+00518213  // 0c: addi x4, x3, 5       ; x4 = x3 + 5 = 15   (Depende de x3. Forwarding MEM/WB -> EX)
+00420223  // 10: sw   x4, 8(x0)       ; Guarda 15 en dir 8 (Depende de x4. Forwarding MEM/WB -> MEM)
+00002503  // 14: lw   x5, 8(x0)       ; Lee 15 de dir 8    ; x5 = 15
+00000013  // 18: addi x0, x0, 0       ; NOP final

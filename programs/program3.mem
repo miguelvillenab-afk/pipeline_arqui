@@ -1,0 +1,10 @@
+00a00093  // 00: addi x1, x0, 10      ; x1 = 10 (Setup)
+01400113  // 04: addi x2, x0, 20      ; x2 = 20 (Setup)
+00102023  // 08: sw   x1, 0(x0)       ; Mem[0] = 10 (Prepara el dato en memoria)
+00000013  // 0c: addi x0, x0, 0       ; NOP (Deja que el sw termine limpiamente)
+00002183  // 10: lw   x3, 0(x0)       ; x3 = Mem[0] = 10  <-- [LOAD]
+00218233  // 14: add  x4, x3, x2      ; x4 = x3 + x2 = 30 <-- [USE] ¡Requiere STALL!
+401182b3  // 18: sub  x5, x3, x1      ; x5 = x3 - x1 = 0  <-- [USE] Requiere Forwarding (MEM/WB), NO stall
+00402423  // 1c: sw   x4, 8(x0)       ; Mem[8] = 30 (Guarda resultado)
+00802303  // 20: lw   x6, 8(x0)       ; x6 = Mem[8] = 30  ; x6 = 30
+00000013  // 24: addi x0, x0, 0       ; NOP final
