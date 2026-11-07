@@ -18,7 +18,7 @@ module riscv_dual(
         .reset (reset),
         .PC    (PC),
         .Instr_A (Instr_A),
-        .Instr_B (Instr_B),
+        .Instr_B (Instr_B), 
         .MemWrite  (MemWrite),
         .DataAdr   (DataAdr),
         .WriteData (WriteData),

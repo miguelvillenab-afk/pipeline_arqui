@@ -3,7 +3,9 @@
 // PC -> a0 de imem_dual -> Instr_A
 // PC+4 -> a1 de imem_dual -> Instr_B
 
-module top_dual(
+module top_dual #(
+    parameter MEMFILE = "program1.mem"
+    )(
     input  clk,
     input  reset,
     output [31:0] WriteData,
@@ -31,14 +33,14 @@ module top_dual(
         .y (PCPlus4)
     );
 
-    imem_dual imem (
+    imem_dual #(.MEMFILE(MEMFILE)) imem (
         .a0  (PC),
         .a1  (PCPlus4),
         .rd0 (Instr_A),
         .rd1 (Instr_B)
     );
 
-    dmem dmem (
+    dmem_dual dmem (
         .clk (clk),
         .we  (MemWrite),
         .a   (DataAdr),

@@ -38,9 +38,28 @@ module regfile_dual(
         end
     end
 
-    assign rd1_A = (a1_A != 5'd0) ? rf[a1_A] : 32'b0;
-    assign rd2_A = (a2_A != 5'd0) ? rf[a2_A] : 32'b0;
-    assign rd1_B = (a1_B != 5'd0) ? rf[a1_B] : 32'b0;
-    assign rd2_B = (a2_B != 5'd0) ? rf[a2_B] : 32'b0;
+    // Lectura con write-through:
+    // si en este mismo ciclo se escribe en el registro que se está leyendo,
+    // devolver el valor nuevo. La vía B es más joven que A, así que tiene
+    // prioridad si ambas escriben el mismo registro.
+    assign rd1_A = (a1_A == 5'd0) ? 32'b0 :
+                   (we3_B && (a3_B == a1_A)) ? wd3_B :
+                   (we3_A && (a3_A == a1_A)) ? wd3_A :
+                                               rf[a1_A];
+
+    assign rd2_A = (a2_A == 5'd0) ? 32'b0 :
+                   (we3_B && (a3_B == a2_A)) ? wd3_B :
+                   (we3_A && (a3_A == a2_A)) ? wd3_A :
+                                               rf[a2_A];
+
+    assign rd1_B = (a1_B == 5'd0) ? 32'b0 :
+                   (we3_B && (a3_B == a1_B)) ? wd3_B :
+                   (we3_A && (a3_A == a1_B)) ? wd3_A :
+                                               rf[a1_B];
+
+    assign rd2_B = (a2_B == 5'd0) ? 32'b0 :
+                   (we3_B && (a3_B == a2_B)) ? wd3_B :
+                   (we3_A && (a3_A == a2_B)) ? wd3_A :
+                                               rf[a2_B];
 
 endmodule
