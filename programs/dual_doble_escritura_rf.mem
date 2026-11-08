@@ -1,0 +1,8 @@
+003100B3  // add  x1, x2, x3    (A: x1 = x2 + x3)
+00628233  // add  x4, x5, x6    (B: x4 = x5 + x6)     -> Ambas escriben en RF en el mismo ciclo (WB).
+001080B3  // add  x1, x1, x1    (A: x1 = x1 + x1)
+002080B3  // add  x1, x1, x2    (B: x1 = x1 + x2)     -> ¡WAW! Ambas escriben en x1. Debe prevalecer el valor de B.
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)

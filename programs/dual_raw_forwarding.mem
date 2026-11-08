@@ -1,0 +1,8 @@
+003100B3  // add  x1, x2, x3    (A: x1 = x2 + x3)
+00318233  // add  x4, x3, x1    (B: x4 = x3 + x1) -> ¡RAW intra-par! B no se emite, se reagrupa.
+00420333  // add  x6, x4, x4    (A: x6 = x4 + x4)  -> B reagrupada se emite como A. Forwarding de x4.
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)

@@ -1,0 +1,8 @@
+00208463  // beq  x1, x2, 8     (A: if x1==x2, PC=PC+8) -> Branch en A, tomado. Salta 2 inst.
+005201B3  // add  x3, x4, x5    (B: x3 = x4 + x5)       -> Debe ser anulada (flush) por el branch de A.
+00000013  // addi x0, x0, 0     (NOP - instrucción en camino incorrecto, saltada)
+00000013  // addi x0, x0, 0     (NOP - destino real del branch)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
