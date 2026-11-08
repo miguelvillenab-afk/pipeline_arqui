@@ -20,6 +20,8 @@ module maindec(input  [6:0] op,
       7'b0010011: controls = 11'b1_00_1_0_00_0_10_0; // I-type ALU
       7'b1101111: controls = 11'b1_11_0_0_10_0_00_1; // jal
       7'b0110111: controls = 11'b1_11_1_0_00_0_00_0; //U-type
-      default:    controls = 11'bx_xx_x_x_xx_x_xx_x; // non-implemented instruction
+      // Opcode no implementado: controles en 0 (NOP, sin escrituras) para
+      // no propagar x por las senales de control.
+      default:    controls = 11'b0_00_0_0_00_0_00_0;
     endcase
 endmodule

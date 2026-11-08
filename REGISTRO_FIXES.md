@@ -3,7 +3,7 @@
 **Proyecto:** `C:\Users\Ricardo\Documentos\pipeline_arqui`
 **Rama:** `Superarquitectura`
 **Creado:** 2026-11-06
-**Última actualización:** 2026-11-06
+**Última actualización:** 2026-11-07
 **Alcance:** todos los fixes de correctitud y huecos de implementación que se hagan
 antes y durante E2.
 
@@ -82,6 +82,9 @@ Prioridad:
 > Los fixes 007–010 no son “bugs” del diseño actual: son piezas que E2 va a
 > necesitar. Se registran acá para no perderlas y para documentar cuándo se
 > implementen.
+>
+> Los fixes de cierre de la Etapa 1 (`FIX-E1-01..07`) se documentan en la
+> sección 12.
 
 ---
 
@@ -901,6 +904,9 @@ Antes de declarar cerrados los huecos:
 - [x] `PrArqui.xpr` incluye `dmem_dual.v` y `extend_dual.v` (agregados al
   `<FileSet sources_1>`).
 
+> Actualización Etapa 1 (2026-11-07): el single-issue quedó verificado de punta
+> a punta con `tb_top_pipeline` sobre `program1..4` + `riscvtest.dat` (sección 12).
+>
 > Los ítems `[~]` no son huecos abiertos: son rutas que dependen del Issue Unit
 > de E2 y por eso no se pueden ejercitar todavía.
 >
@@ -975,7 +981,187 @@ se corrija el `.mem` en una tarea aparte y con autorización.
 
 ---
 
-## 11. Historial del documento
+## 11. Implementación E2 por etapas
+
+### E2.1 — Infraestructura dual: vía B completa hasta writeback
+
+| Campo | Detalle |
+|---|---|
+| **Estado** | `VERIFICADO` (simulación, 2026-11-06/07) |
+| **Etapa** | E2.1 (no cambia la política de emisión) |
+| **Fecha** | 2026-11-06 |
+| **Archivo(s)** | `src_super/datapath_dual.v`, `src_super/issue_dual.v`, `src_super/hazard_dual.v`, `PrArqui.xpr` |
+| **Líneas** | `datapath_dual.v` 104–141, 307–391, 393–499, 501–513, 543–569, 589–605, 607–673; `PrArqui.xpr` 287–302 |
+| **Señales nuevas** | `issue_B_comb`, `IF_ID_IssueB`, `fwdA_A/B`, `fwdB_A/B`, `fwdC_A`, `fwdA_B`, `fwdB_B`, `EX_MEM_B_*`, `MEM_WB_B_*`, `wb_Result_B`, `flush_idex_a_hz`, `flush_idex_b_hz`, `flush_idex_b`, `flush_exmem_b` |
+
+**Objetivo.**
+Dejar la vía B completa (EX propia, EX/MEM, MEM/WB y escritura en el register
+file) e integrar `issue_dual` y `hazard_dual` como unidades activas. Hasta E1 el
+diseño era “A-only”: `issue_B_comb` estaba fijo en `0` y B nunca pasaba de
+ID/EX. E2.1 no habilita todavía load/store ni branch en B; eso llega en E2.2–E2.4.
+
+**Qué se cambió.**
+
+1. **Issue Unit conectado.** `issue_dual iu` genera `issue_B_comb` a partir de
+   `Instr_A`/`Instr_B` en IF (líneas 607–613). Se eliminó el `assign
+   issue_B_comb = 1'b0` provisorio.
+2. **Hazard Unit dual.** Se reemplazó `hazard_unit hu` (single-issue) por
+   `hazard_dual hz` (líneas 615–660). Ahora recibe rs1/rs2/rd de A y B, EX/MEM y
+   MEM/WB de ambas vías, y devuelve `flush_ID_EX_A`/`flush_ID_EX_B` separados y
+   forwarding de 3 bits (`fwdA_A`, `fwdB_A`, `fwdC_A`, `fwdA_B`, `fwdB_B`).
+3. **Forwarding de 5 fuentes.** Los tres mux de A (`mux_forwardA`,
+   `mux_forwardB`, `mux_forwardC`) y los dos de B (`mux_forwardA_B`,
+   `mux_forwardB_B`) pasaron de `mux3` a `mux5` (líneas 407–436 y 462–480). Las
+   fuentes son: valor propio, WB-A, WB-B, EX/MEM-A, EX/MEM-B.
+4. **EX de B.** Se agregaron `srcbmux_b`, `alu_b`, `pcaddbranch_b` y
+   `ex_PCSrc_B` (líneas 454–496). `ID_EX_B_*` ya existía; ahora se consume.
+5. **EX/MEM de B.** `exmem reg_exmem_b` (líneas 543–569). Sus controles
+   `MemWrite` y `RegWrite` se gatean con `~flush_exmem_b`; como
+   `flush_exmem_b = 0` en E2.1, el gate no tiene efecto todavía. Es el punto de
+   inserción de D3/E2.4.
+6. **MEM/WB de B.** `memwb reg_memwb_b` (líneas 589–605) y
+   `wb_Result_B` (línea 670).
+7. **Puerto B del register file habilitado.** Antes estaba atado a `1'b0`/`5'd0`/
+   `32'd0`; ahora escribe con `MEM_WB_B_RegWrite`, `MEM_WB_B_rd` y
+   `wb_Result_B` (líneas 239–241).
+8. **Flush separado por vía.**
+   `flush_idex_b = flush_idex_b_hz | ~IF_ID_IssueB` (línea 119). Si el Issue Unit
+   no aceptó B, su ID/EX se limpia y B se re-ejecuta como A del par siguiente.
+9. **`stall_ID_EX` de A y B en `1'b0`.** El `hazard_unit` single-issue anterior
+   ponía `stall_ID_EX = 1` y `flush_ID_EX = 1` a la vez en load-use. En
+   `flopenrc` la prioridad es `reset > clr > en`, así que el `stall` nunca tenía
+   efecto: el registro se limpiaba igual. Poner `stall_ID_EX = 0` deja el mismo
+   comportamiento y evita una señal muerta.
+10. **`PrArqui.xpr`.** `issue_dual.v` y `hazard_dual.v` se movieron de
+    `PrArqui.srcs/sources_1/new/` a `src_super/` (rutas `$PPRDIR/../../pipeline_arqui/src_super/...`)
+    y se les quitó `AutoDisabled="1"`. También se le quitó `AutoDisabled` a
+    `mux5.v`, que estaba deshabilitado aunque ya se usa.
+    > Nota: Vivado reescribió `PrArqui.xpr` en una sesión posterior y devolvió
+    > `issue_dual.v`/`hazard_dual.v` a `sources_1/new` con `AutoDisabled=1`. Se
+    > volvió a aplicar la corrección el 2026-11-07. Si el proyecto está abierto en
+    > Vivado, hay que cerrarlo antes de editar el `.xpr` para que no lo pise.
+
+**Qué NO se cambió en E2.1.**
+
+- `issue_dual.v` sigue con la política conservadora: B solo R/I/LUI, A no puede
+  ser branch/jal, sin RAW/WAW intra-par.
+- `writeData_fwd_B = ID_EX_B_WriteData` (línea 499): falta `fwdC_B` para el dato
+  de store de B. Llega en E2.2 (D1).
+- `flush_exmem_b = 1'b0` (línea 141): el squash de B por branch tomado en A llega
+  en E2.4 (D3).
+- `PCNext` no considera el target de B (línea 507): llega en E2.3 (D2).
+
+**Verificación.**
+
+Test `tb_e21.v` (7 instancias de `top_dual`, un `.mem` por escenario,
+xsim 2026.1). Resultado: **PASS**.
+
+| Escenario | Programa | Resultado |
+|---|---|---|
+| Dos ALU independientes en el par | `addi x1,10` + `addi x2,20`; luego `add x3,x1,x2` + `addi x4,0` | `x1=10`, `x2=20`, `x3=30`, `x4=0`; 2 pares emitidos |
+| RAW intra-par (B lee lo que escribe A) | `addi x1,10` + `add x2,x1,x1` | `x2=20`; el par no se emite y B se re-busca como A |
+| WAW intra-par (A y B escriben x1) | `addi x1,10` + `addi x1,20` | `x1=20`; el par conflictivo no se emite |
+| LUI en A y en B | `lui x1,0x1` + `lui x2,0x2`; `add x3,x1,x2` + `addi x4,0` | `x1=0x1000`, `x2=0x2000`, `x3=0x3000` |
+| `lw` en B todavía no se emite | `addi x1,5` + `lw x2,0(x0)` | `x1=5`, `x2=10`; el `lw` se ejecuta como A del par siguiente |
+| Load-use con consumidor en B | `lw x1,0(x0)` + `add x2,x1,x1` | `x1=10`, `x2=20`; un solo par emitido tras el stall |
+| Forwarding desde MEM/WB vía B | `addi x1,10` + `addi x2,20`; luego `add x5,x2,x0` | `x5=20`; 3 pares emitidos |
+
+Regresión `program1..4` contra `top_pipeline` (80 ciclos, mismo `.mem` para
+ambos):
+
+- `dmem` idéntico en los 4 programas.
+- Única diferencia de registros: `x10` en `program1` y `program2`. El dual da
+  `10`; el single-issue da `x`. Es la diferencia esperada por `FIX-001` (el
+  single-issue conserva la lectura registrada de `dmem`).
+- Los programas 3 y 4 dan registros y memoria idénticos.
+
+**Riesgo / efecto colateral.**
+`flush_exmem_b` todavía no se usa y `writeData_fwd_B` no tiene forwarding: ambos
+son huecos conocidos de E2.2/E2.4, no regresiones. La vía B ejecuta solo ALU/LUI
+porque el Issue Unit la bloquea para load/store/branch, así que el puerto único
+de memoria sigue siendo de A.
+
+**Relacionado.** `FIX-005`, `FIX-006`, `FIX-007`, `FIX-008`, E2.2 (D1),
+E2.3 (D2), E2.4 (D3).
+
+---
+
+## 12. Cierre de Etapa 1 (single-issue)
+
+**Fecha:** 2026-11-07
+**Objetivo:** dejar `proyecto_final.xpr` / `top_pipeline` verificable de punta a
+punta para poder iniciar E2 sobre una base confiable.
+**Excepción aprobada:** se autorizó modificar `src files/` de forma puntual
+(regla 5). Los cambios se limitan a los 5 archivos listados abajo. No se tocaron
+`program1.mem`, `program2.mem`, `program3.mem`, `program4.mem` ni
+`riscvtest.dat`.
+
+### 12.1 Fixes aplicados
+
+| Fix | Archivo : líneas | Cambio | Por qué | Verificación |
+|---|---|---|---|---|
+| `FIX-E1-01` | `src files/extend.v` : 21–29 | En `immsrc = 2'b11` se distingue `jal` (opcode `1101111`) del resto (`lui`) y se genera el inmediato J-type | `maindec` asigna `ImmSrc = 11` a `lui` y `jal`; el `extend` original generaba siempre U-type y el target de `jal` quedaba mal | `tb_extend`: I/S/B/U/J (+8 y −4) PASS |
+| `FIX-E1-02` | `src files/dmem.v` : 19–28 | Lectura combinacional `assign rd = RAM[a[31:2]]`; la escritura sigue síncrona | `MEM/WB` capturaba en el mismo flanco el dato registrado anterior: `lw` entregaba el valor viejo (mismo `FIX-001` ya corregido en `dmem_dual.v`) | `tb_dmem`: `sw`→`lw` y lectura por dirección PASS; `program2/3` correctos |
+| `FIX-E1-03` | `src files/imem.v` : 1–24 | `parameter MEMFILE = "program1.mem"`, `$readmemh(MEMFILE, RAM)`, RAM inicializada a NOP y guard fuera de rango (`7'd64`) que devuelve NOP | El archivo estaba fijo a `program4.mem` mientras el `.xpr` incluía `program1.mem`; las palabras no cargadas quedaban en `x` y al terminar el programa se propagaba `x` | Los 5 programas cargan sin renombrar archivos; post-programa determinista |
+| `FIX-E1-04` | `src files/top_pipeline.v` : 11–14 y 34 | `parameter MEMFILE = "program1.mem"` propagado a `imem #(.MEMFILE(MEMFILE))` | Permite instanciar varios DUT con programas distintos en un mismo TB | `tb_top_pipeline` instancia 5 DUT en paralelo |
+| `FIX-E1-05` | `src files/maindec.v` : 23–25 | `default: controls = 11'b0_00_0_0_00_0_00_0` (NOP: sin RegWrite/MemWrite/Branch/Jump) | El default `11'bx...` propagaba `x` ante opcode no implementado. Es compartido con dual: solo agrega determinismo | Regresión `program1..4` sin cambios; `tb_e21` sigue PASS |
+| `FIX-E1-06` | `testbench/tb_top_pipeline.v` (reemplazo completo) | TB definitivo: 5 DUT, reset, 400 ciclos, checks de 32 registros y 64 palabras de `dmem` por programa, monitor `sw 25 @ 100` para `riscvtest`, PASS/FAIL con `$fatal` | El TB anterior corría 800 ns y no verificaba nada | **PASS** con `program1..4` + `riscvtest.dat` |
+| `FIX-E1-07` | `src files/dmem.v` : 11–20 | Inicializa las 64 palabras a 0 antes de fijar `RAM[0] = 0x0A` y `RAM[2] = 0x1E` | Las palabras no escritas quedaban en `x`; la memoria determinista evita `x` en `lw` de direcciones no inicializadas | `tb_top_pipeline` compara las 64 palabras sin `x` |
+
+### 12.2 Incidencia detectada durante la implementación
+
+El primer guard de `imem` se escribió como `(a[31:2] < 6'd64)`. Como `6'd64`
+trunca a `0`, la comparación era siempre falsa y `imem` devolvía NOP para toda
+dirección: el TB mostró todos los registros en 0. Se corrigió a `7'd64` y se
+repitió la regresión completa. Queda documentado porque justifica que el TB
+definitivo sea parte del cierre y no un extra.
+
+### 12.3 Verificación
+
+Herramienta: xsim 2026.1, compilación con `--relax`.
+
+| Prueba | Resultado |
+|---|---|
+| `tb_extend` (I/S/B/U/J, +8 y −4) | PASS |
+| `tb_dmem` (lectura inicial, `sw`→`lw`, lectura combinacional) | PASS |
+| `tb_top_pipeline` (`program1..4` + `riscvtest.dat`) | **PASS** |
+| `tb_e21` (regresión E2.1, `maindec` compartido) | **PASS** (29 checks) |
+| Comparación cruzada single vs dual, P1–P4, 32 registros | **Sin diferencias** (el `x10` de P1/P2 ya coincide) |
+| Comparación cruzada `dmem` P1–P4, palabras 0/2/4/8 | Sin diferencias |
+
+`riscvtest.dat` termina con `beq x2,x2,0` (halt por auto-branch): el TB además
+verifica el criterio clásico, `sw` de 25 en la dirección 100, y el estado final
+`x2 = 25`, `x7 = 7`, `mem[25] = 25`.
+
+La única diferencia que queda entre single y dual es `dmem` en palabras nunca
+escritas: el single ahora da `0` (FIX-E1-07) y `dmem_dual` conserva `x`. No es
+una regresión de E1; se anota como higiene pendiente para E2.
+
+### 12.4 Notas y decisiones
+
+- Se conservaron los valores iniciales `RAM[0] = 0x0A` y `RAM[2] = 0x1E` de
+  `dmem.v` para no cambiar los resultados esperados de `program1..3`; solo se
+  agregó el cero para el resto de las palabras.
+- `program1.mem` y `program2.mem` tienen comentarios que no coinciden con la
+  codificación real (por ejemplo, `00002503` es `lw x10,0(x0)`, no `lw x5,...`).
+  No se modificaron; los valores esperados del TB salen de la codificación, no
+  de los comentarios.
+- `maindec.v` es compartido por single y dual. El cambio de default solo afecta
+  opcodes no implementados.
+- `proyecto_final.xpr` se actualizó para incluir `program2.mem`,
+  `program3.mem`, `program4.mem` y `data/riscvtest.dat` en `sim_1`, además de
+  `program1.mem`, para que Vivado los copie al directorio de simulación.
+  XML validado.
+
+### 12.5 Estado
+
+**Etapa 1 cerrada.** La base single-issue queda verificada con un TB que
+compara estado arquitectónico completo. Siguiente paso: **E2.2 (D1, load/store
+en B)**.
+
+---
+
+## 13. Historial del documento
 
 | Fecha | Cambio |
 |---|---|
@@ -983,3 +1169,5 @@ se corrija el `.mem` en una tarea aparte y con autorización.
 | 2026-11-06 | Se aplican `FIX-001` (dmem_dual), `FIX-002` (write-through), `FIX-003` (extend_dual) y `FIX-009` (MEMFILE). Verificación por simulación pendiente. |
 | 2026-11-06 | Se aplican `FIX-004` (flush de B sin emisión), `FIX-005` (`IF_ID_IssueB` + placeholder `issue_B_comb`) y `FIX-006` (`PCNext` con `PC+4`/`PC+8`/target). Verificación por simulación pendiente. |
 | 2026-11-06 | Verificación con xsim 2026.1: `FIX-001..006` y `FIX-009` pasan. Regresión `program1..4` con `dmem` idéntico al single-issue. Se agregan `dmem_dual.v` y `extend_dual.v` a `PrArqui.xpr`. Se documenta el hallazgo de codificación de `program1/2.mem`. |
+| 2026-11-07 | **E2.1 aplicado y verificado**: `issue_dual`/`hazard_dual` integrados, forwarding de 5 fuentes (`mux5`), EX/MEM B, MEM/WB B y puerto B del RF. `tb_e21` PASS en 7 escenarios; regresión `program1..4` sin cambios de `dmem`. `issue_dual.v`/`hazard_dual.v` movidos a `src_super/` y habilitados junto con `mux5` en `PrArqui.xpr`. `FIX-005..008` pasan a `VERIFICADO`. Se agrega la sección 11 (E2 por etapas). |
+| 2026-11-07 | **Etapa 1 cerrada**: se aplican `FIX-E1-01..07` en `src files/` (extend J-type, dmem combinacional, imem con MEMFILE + NOP + guard, top con MEMFILE, maindec default 0, TB definitivo, dmem determinista). `tb_extend`, `tb_dmem` y `tb_top_pipeline` (5 programas) PASS; `tb_e21` sigue PASS; comparación single vs dual sin diferencias de registros. `proyecto_final.xpr` incluye los 5 programas. Se agrega la sección 12. |

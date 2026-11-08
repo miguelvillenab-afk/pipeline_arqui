@@ -8,7 +8,9 @@
 //   - top_pipeline.v -> riscvpipeline + imem + dmem
 //////////////////////////////////////////////////////////////////////////////////
 
-module top_pipeline(
+module top_pipeline #(
+    parameter MEMFILE = "program1.mem"
+    )(
     input  clk,
     input  reset,
     output [31:0] WriteData,
@@ -29,7 +31,7 @@ module top_pipeline(
         .ReadData  (ReadData)
     );
 
-    imem imem (
+    imem #(.MEMFILE(MEMFILE)) imem (
         .a  (PC),
         .rd (Instr)
     );
