@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_top_pipeline_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_top_pipeline" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="86.552 ns"></ZoomEndTime>
+      <Cursor1Time time="153.288 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="190"></NameColumnWidth>
+      <ValueColumnWidth column_width="74"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="17" />
+   <wvobject fp_name="/tb_top_pipeline/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/PC" type="array">
+      <obj_property name="ElementShortName">PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/Instr" type="array">
+      <obj_property name="ElementShortName">Instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/IF_ID_Instr" type="array">
+      <obj_property name="ElementShortName">IF_ID_Instr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">IF_ID_Instr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_Branch" type="logic">
+      <obj_property name="ElementShortName">ID_EX_Branch</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_Branch</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_Zero" type="logic">
+      <obj_property name="ElementShortName">ex_Zero</obj_property>
+      <obj_property name="ObjectShortName">ex_Zero</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_PCSrc" type="logic">
+      <obj_property name="ElementShortName">ex_PCSrc</obj_property>
+      <obj_property name="ObjectShortName">ex_PCSrc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/flush_ifid_hz" type="logic">
+      <obj_property name="ElementShortName">flush_ifid_hz</obj_property>
+      <obj_property name="ObjectShortName">flush_ifid_hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_ALUControl" type="array">
+      <obj_property name="ElementShortName">ID_EX_ALUControl[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_ALUControl[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcA_fwd" type="array">
+      <obj_property name="ElementShortName">alu_SrcA_fwd[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcA_fwd[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcB_fwd" type="array">
+      <obj_property name="ElementShortName">alu_SrcB_fwd[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcB_fwd[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_ALUResult" type="array">
+      <obj_property name="ElementShortName">ex_ALUResult[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_ALUResult[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_Zero" type="logic">
+      <obj_property name="ElementShortName">ex_Zero</obj_property>
+      <obj_property name="ObjectShortName">ex_Zero</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_rs1" type="array">
+      <obj_property name="ElementShortName">ID_EX_rs1[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_rs1[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_rs2" type="array">
+      <obj_property name="ElementShortName">ID_EX_rs2[4:0]</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_rs2[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/rf/rf" type="array">
+      <obj_property name="ElementShortName">rf[0:31][31:0]</obj_property>
+      <obj_property name="ObjectShortName">rf[0:31][31:0]</obj_property>
+   </wvobject>
+</wave_config>
