@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_dual_alu_indep_debug_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_dual_alu_indep_debug" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="165.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="288.601 ns"></ZoomEndTime>
+      <Cursor1Time time="314.984 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="215"></NameColumnWidth>
+      <ValueColumnWidth column_width="82"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="16" />
+   <wvobject fp_name="/tb_dual_alu_indep_debug/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/PC" type="array">
+      <obj_property name="ElementShortName">PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/PCNext" type="array">
+      <obj_property name="ElementShortName">PCNext[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PCNext[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/issue_B_comb" type="logic">
+      <obj_property name="ElementShortName">issue_B_comb</obj_property>
+      <obj_property name="ObjectShortName">issue_B_comb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/IF_ID_IssueB" type="logic">
+      <obj_property name="ElementShortName">IF_ID_IssueB</obj_property>
+      <obj_property name="ObjectShortName">IF_ID_IssueB</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/Instr_A" type="array">
+      <obj_property name="ElementShortName">Instr_A[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr_A[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/Instr_B" type="array">
+      <obj_property name="ElementShortName">Instr_B[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr_B[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/ex_ALUResult" type="array">
+      <obj_property name="ElementShortName">ex_ALUResult[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_ALUResult[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/ex_ALUResult_B" type="array">
+      <obj_property name="ElementShortName">ex_ALUResult_B[31:0]</obj_property>
+      <obj_property name="ObjectShortName">ex_ALUResult_B[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/ID_EX_ALUControl" type="array">
+      <obj_property name="ElementShortName">ID_EX_ALUControl[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_ALUControl[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/ID_EX_B_ALUControl" type="array">
+      <obj_property name="ElementShortName">ID_EX_B_ALUControl[2:0]</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_B_ALUControl[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/MEM_WB_RegWrite" type="logic">
+      <obj_property name="ElementShortName">MEM_WB_RegWrite</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_RegWrite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/MEM_WB_B_RegWrite" type="logic">
+      <obj_property name="ElementShortName">MEM_WB_B_RegWrite</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_B_RegWrite</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/MEM_WB_rd" type="array">
+      <obj_property name="ElementShortName">MEM_WB_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_rd[4:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_alu_indep_debug/uut/rvd/dp/MEM_WB_B_rd" type="array">
+      <obj_property name="ElementShortName">MEM_WB_B_rd[4:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_B_rd[4:0]</obj_property>
+   </wvobject>
+</wave_config>

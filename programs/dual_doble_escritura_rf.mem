@@ -1,8 +1,12 @@
-003100B3  // add  x1, x2, x3    (A: x1 = x2 + x3)
-00628233  // add  x4, x5, x6    (B: x4 = x5 + x6)     -> Ambas escriben en RF en el mismo ciclo (WB).
-001080B3  // add  x1, x1, x1    (A: x1 = x1 + x1)
-002080B3  // add  x1, x1, x2    (B: x1 = x1 + x2)     -> ¡WAW! Ambas escriben en x1. Debe prevalecer el valor de B.
-00000013  // addi x0, x0, 0     (NOP)
-00000013  // addi x0, x0, 0     (NOP)
-00000013  // addi x0, x0, 0     (NOP)
-00000013  // addi x0, x0, 0     (NOP)
+00500113  // 0x00 addi x2,x0,5
+00700193  // 0x04 addi x3,x0,7
+00A00293  // 0x08 addi x5,x0,10
+01400313  // 0x0C addi x6,x0,20
+003100B3  // 0x10 add x1,x2,x3   -> 12 (A)
+00628233  // 0x14 add x4,x5,x6   -> 30 (B), dos escrituras en el mismo ciclo
+001080B3  // 0x18 add x1,x1,x1   -> 24 (RAW + WAW con el siguiente)
+002080B3  // 0x1C add x1,x1,x2   -> 29 (se re-busca como A)
+00000013
+00000013
+00000013
+00000013

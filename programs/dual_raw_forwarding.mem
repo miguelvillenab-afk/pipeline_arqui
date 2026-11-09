@@ -1,8 +1,14 @@
-003100B3  // add  x1, x2, x3    (A: x1 = x2 + x3)
-00318233  // add  x4, x3, x1    (B: x4 = x3 + x1) -> ¡RAW intra-par! B no se emite, se reagrupa.
-00420333  // add  x6, x4, x4    (A: x6 = x4 + x4)  -> B reagrupada se emite como A. Forwarding de x4.
-00000013  // addi x0, x0, 0     (NOP)
-00000013  // addi x0, x0, 0     (NOP)
-00000013  // addi x0, x0, 0     (NOP)
-00000013  // addi x0, x0, 0     (NOP)
-00000013  // addi x0, x0, 0     (NOP)
+00500113  // idx0: addi x2,x0,5
+00700193  // idx1: addi x3,x0,7        (par 0: ambas se emiten)
+003100B3  // idx2: add  x1,x2,x3       -> 12
+00118233  // idx3: add  x4,x3,x1       -> 19 (RAW con idx2)
+00420333  // idx4: add  x6,x4,x4       -> 38 (RAW con idx3)
+00000013  // idx5: nop
+00300393  // idx6: addi x7,x0,3
+00400413  // idx7: addi x8,x0,4        (B produce x8)
+007404B3  // idx8: add  x9,x8,x7       -> 7 (A consume x8 de la vía B)
+00000013  // idx9: nop
+00000013
+00000013
+00000013
+00000013

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_dual_loaduse_memconflict_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_dual_loaduse_memconflict" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="0.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="60.601 ns"></ZoomEndTime>
+      <Cursor1Time time="20.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="193"></NameColumnWidth>
+      <ValueColumnWidth column_width="74"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="7" />
+   <wvobject fp_name="/tb_dual_loaduse_memconflict/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_loaduse_memconflict/PC" type="array">
+      <obj_property name="ElementShortName">PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_loaduse_memconflict/uut/rvd/dp/stall_ifid_hz" type="logic">
+      <obj_property name="ElementShortName">stall_ifid_hz</obj_property>
+      <obj_property name="ObjectShortName">stall_ifid_hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_loaduse_memconflict/uut/rvd/dp/Instr_A" type="array">
+      <obj_property name="ElementShortName">Instr_A[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr_A[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_loaduse_memconflict/uut/rvd/dp/Instr_B" type="array">
+      <obj_property name="ElementShortName">Instr_B[31:0]</obj_property>
+      <obj_property name="ObjectShortName">Instr_B[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_loaduse_memconflict/uut/rvd/dp/issue_B_comb" type="logic">
+      <obj_property name="ElementShortName">issue_B_comb</obj_property>
+      <obj_property name="ObjectShortName">issue_B_comb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_loaduse_memconflict/uut/rvd/dp/MEM_WB_RegWrite" type="logic">
+      <obj_property name="ElementShortName">MEM_WB_RegWrite</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_RegWrite</obj_property>
+   </wvobject>
+</wave_config>

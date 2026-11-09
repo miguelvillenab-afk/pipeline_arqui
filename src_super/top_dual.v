@@ -8,12 +8,11 @@ module top_dual #(
     output        MemWrite,
     output [31:0] DataAdr,
     output [31:0] WriteData
-    // ELIMINA: input [31:0] ReadData  <-- ¡BORRA ESTA LÍNEA!
 );
 
     // Señales internas
     wire [31:0] Instr_A, Instr_B, PCPlus4;
-    wire [31:0] ReadData;  // <-- AGREGA ESTA LÍNEA (wire interno)
+    wire [31:0] ReadData;  
 
     riscv_dual rvd (
         .clk       (clk),
@@ -24,7 +23,7 @@ module top_dual #(
         .MemWrite  (MemWrite),
         .DataAdr   (DataAdr),
         .WriteData (WriteData),
-        .ReadData  (ReadData)  // <-- Ahora sí está conectado
+        .ReadData  (ReadData) 
     );
 
     adder pcadd4 (
@@ -45,7 +44,7 @@ module top_dual #(
         .we  (MemWrite),
         .a   (DataAdr),
         .wd  (WriteData),
-        .rd  (ReadData)  // <-- Conectado al wire interno
+        .rd  (ReadData)
     );
 
 endmodule
