@@ -1,30 +1,29 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// PC -> a0 de imem_dual -> Instr_A
-// PC+4 -> a1 de imem_dual -> Instr_B
-
 module top_dual #(
     parameter MEMFILE = "program1.mem"
     )(
     input  clk,
     input  reset,
-    output [31:0] WriteData,
+    output [31:0] PC,
+    output        MemWrite,
     output [31:0] DataAdr,
-    output        MemWrite
-    );
+    output [31:0] WriteData
+);
 
-    wire [31:0] PC, Instr_A, Instr_B, PCPlus4, ReadData;
+    // Señales internas
+    wire [31:0] Instr_A, Instr_B, PCPlus4;
+    wire [31:0] ReadData;  
 
     riscv_dual rvd (
         .clk       (clk),
         .reset     (reset),
         .PC        (PC),
         .Instr_A   (Instr_A),
-        .Instr_B   (Instr_B),
+        .Instr_B   (Instr_B), 
         .MemWrite  (MemWrite),
         .DataAdr   (DataAdr),
         .WriteData (WriteData),
-        .ReadData  (ReadData)
+        .ReadData  (ReadData) 
     );
 
     adder pcadd4 (
