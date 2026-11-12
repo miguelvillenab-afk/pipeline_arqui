@@ -1,0 +1,89 @@
+HAZARD UNIT
+Señal | Origen | Destino
+StallD | Hazard Unit | PCF e IF/ID (EN)
+ValidD0 | Registro IF/ID, instrucción 0 | Hazard Unit
+ValidD1 | Registro IF/ID, instrucción 1 | Hazard Unit
+FlushE | Hazard Unit | Registro ID/EX (Clear)
+ValidE0 | Registro ID/EX, instrucción 0 | Hazard Unit
+ValidE1 | Registro ID/EX, instrucción 1 | Hazard Unit
+ForwardAE0 | Hazard Unit | MUX SrcAE0
+ForwardBE0 | Hazard Unit | MUX SrcBE0
+ForwardAE1 | Hazard Unit | MUX SrcAE1
+ForwardBE1 | Hazard Unit | MUX SrcBE1
+RdM0 | Registro EX/MEM, instrucción 0 | Hazard Unit
+ResultSrcM0 | Registro EX/MEM, instrucción 0 | Hazard Unit
+RegWriteM0 | Registro EX/MEM, instrucción 0 | Hazard Unit
+RdM1 | Registro EX/MEM, instrucción 1 | Hazard Unit
+ResultSrcM1 | Registro EX/MEM, instrucción 1 | Hazard Unit
+RegWriteM1 | Registro EX/MEM, instrucción 1 | Hazard Unit
+ValidM0 | Registro EX/MEM, instrucción 0 | Hazard Unit
+ValidM1 | Registro EX/MEM, instrucción 1 | Hazard Unit
+RdW0 | Registro MEM/WB, instrucción 0 | Hazard Unit
+RegWriteW0 | Registro MEM/WB, instrucción 0 | Hazard Unit
+ValidW0 | Registro MEM/WB, instrucción 0 | Hazard Unit
+RdW1 | Registro MEM/WB, instrucción 1 | Hazard Unit
+RegWriteW1 | Registro MEM/WB, instrucción 1 | Hazard Unit
+ValidW1 | Registro MEM/WB, instrucción 1 | Hazard Unit
+
+FETCH (IF)
+Señal | Origen | Destino
+PCF | Registro PC | Instruction Memory
+InstrD0 | Instruction Memory (RD0) | Registro IF/ID
+InstrD1 | Instruction Memory (RD1) | Registro IF/ID
+PCD0 | Registro IF/ID | Branch Comparator + Target Adder
+PCD1 | Registro IF/ID | Branch Comparator + Target Adder
+StallD | Hazard Unit | Habilitación del PC y registro IF/ID
+
+DECODE (ID)
+Señal | Origen | Destino
+RegWriteD0 | Control Unit 0 | Registro ID/EX 0
+ResultSrcD0 | Control Unit 0 | Registro ID/EX 0
+MemWriteD0 | Control Unit 0 | Registro ID/EX 0
+JumpD0 | Control Unit 0 | Registro ID/EX 0
+BranchD0 | Control Unit 0 | Registro ID/EX 0
+ALUControlD0 | Control Unit 0 | Registro ID/EX 0
+ALUSrcD0 | Control Unit 0 | Registro ID/EX 0
+SrcASelD0 | Control Unit 0 | Registro ID/EX 0
+JumpRegD0 | Control Unit 0 | Registro ID/EX 0
+RegWriteD1 | Control Unit 1 | Registro ID/EX 1
+ResultSrcD1 | Control Unit 1 | Registro ID/EX 1
+MemWriteD1 | Control Unit 1 | Registro ID/EX 1
+JumpD1 | Control Unit 1 | Registro ID/EX 1
+BranchD1 | Control Unit 1 | Registro ID/EX 1
+ALUControlD1 | Control Unit 1 | Registro ID/EX 1
+ALUSrcD1 | Control Unit 1 | Registro ID/EX 1
+SrcASelD1 | Control Unit 1 | Registro ID/EX 1
+JumpRegD1 | Control Unit 1 | Registro ID/EX 1
+
+EXECUTE (EX)
+Señal | Origen | Destino
+SrcAE0 | Register File / MUX de forwarding | ALU 0
+SrcBE0 | Register File / MUX de forwarding | ALU 0
+SrcAE1 | Register File / MUX de forwarding | ALU 1
+SrcBE1 | Register File / MUX de forwarding | ALU 1
+ImmExtE0 | Extend 0 | ALU 0
+ImmExtE1 | Extend 1 | ALU 1
+ALUResultE0 | ALU 0 | Registro EX/MEM
+ALUResultE1 | ALU 1 | Registro EX/MEM
+WriteDataE0 | Register File / forwarding | Registro EX/MEM
+WriteDataE1 | Register File / forwarding | Registro EX/MEM
+PCTargetE0 | Branch Comparator + Target Adder | Lógica de selección del PC
+
+MEMORY (MEM)
+Señal | Origen | Destino
+ALUResultM0 | Registro EX/MEM | Registro MEM/WB
+ALUResultM1 | Registro EX/MEM | Registro MEM/WB
+WriteDataM0 | Registro EX/MEM | Data Memory
+WriteDataM1 | Registro EX/MEM | Data Memory
+MemWriteM0 | Registro EX/MEM | Data Memory (WE)
+MemWriteM1 | Registro EX/MEM | Control de escritura de memoria
+ReadDataM0 | Data Memory | Registro MEM/WB
+
+WRITE BACK (WB)
+Señal | Origen | Destino
+ResultW0 | MUX de Write Back 0 | Register File
+ResultW1 | MUX de Write Back 1 | Register File
+RdW0 | Registro MEM/WB | Register File
+RdW1 | Registro MEM/WB | Register File
+RegWriteW0 | Registro MEM/WB | Register File (WE)
+RegWriteW1 | Registro MEM/WB | Register File (WE)
