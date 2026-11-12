@@ -1,0 +1,8 @@
+00210083  // lw   x1, 0(x2)     (A: Load x1 desde memoria)
+00108133  // addi x2, x1, 1     (B: x2 = x1 + 1)    -> ¡Load-Use! Stall de 1 ciclo, B no se emite.
+00210083  // lw   x3, 0(x2)     (A: Load x3 desde memoria)
+00320023  // sw   x3, 0(x4)     (B: Store x3)       -> ¡Conflicto de memoria! B no se emite, se reagrupa.
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)
+00000013  // addi x0, x0, 0     (NOP)

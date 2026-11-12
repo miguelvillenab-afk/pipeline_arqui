@@ -1,0 +1,14 @@
+00500093  // 0x00 addi x1,x0,5
+00500113  // 0x04 addi x2,x0,5
+00300213  // 0x08 addi x4,x0,3
+00400293  // 0x0C addi x5,x0,4
+00208463  // 0x10 beq x1,x2,8   (A, TOMADO -> 0x18)
+005201B3  // 0x14 add x3,x4,x5  (debe anularse: x3 = 0)
+00100313  // 0x18 addi x6,x0,1  (A del par)
+00208463  // 0x1C beq x1,x2,8   (B, TOMADO -> 0x24)
+00900413  // 0x20 addi x8,x0,9  (debe anularse: x8 = 0)
+00100493  // 0x24 addi x9,x0,1  (A del par)
+00408463  // 0x28 beq x1,x4,8   (B, NO tomado: 5 != 3)
+00200513  // 0x2C addi x10,x0,2 (debe ejecutarse)
+00300593  // 0x30 addi x11,x0,3 (debe ejecutarse)
+00000063  // 0x34 beq x0,x0,0   (bucle final)
