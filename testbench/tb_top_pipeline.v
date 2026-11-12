@@ -21,13 +21,12 @@ module tb_top_pipeline();
 
     initial begin
         clk = 0;
-        reset = 1;
-
-        #20;
-        reset = 0;
-
-        #200; 
-
+        reset = 1;        
+        #20;          
+        reset = 0;    
+        
+        #800;         
+        $display("Simulación finalizada.");
         $finish;
     end
 
