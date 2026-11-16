@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 module top_dual #(
-    parameter MEMFILE = "program1.mem"
+    parameter MEMFILE = "prueba_final.mem"
     )(
     input  clk,
     input  reset,
@@ -47,4 +47,4 @@ module top_dual #(
         .rd  (ReadData)
     );
 
-endmodule
+endmodule

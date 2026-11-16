@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_top_dual_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="tb_top_dual" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="40.000 ns"></ZoomStartTime>
+      <ZoomEndTime time="100.000 ns"></ZoomEndTime>
+      <Cursor1Time time="70.000 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="190"></NameColumnWidth>
+      <ValueColumnWidth column_width="110"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="37" />
+   <wvobject type="divider" fp_name="divider1">
+      <obj_property name="label">CONTROL</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_dual/clk">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/PC">
+      <obj_property name="ElementShortName">PC</obj_property>
+      <obj_property name="ObjectShortName">PC</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/IF_ID_Instr">
+      <obj_property name="ElementShortName">IF_ID_Instr</obj_property>
+      <obj_property name="ObjectShortName">IF_ID_Instr</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/IF_ID_Instr_B">
+      <obj_property name="ElementShortName">IF_ID_Instr_B</obj_property>
+      <obj_property name="ObjectShortName">IF_ID_Instr_B</obj_property>
+      <obj_property name="Radix">HEXRADIX</obj_property>
+   </wvobject>
+   <wvobject type="logic" fp_name="/tb_top_dual/dut/rvd/dp/IF_ID_IssueB">
+      <obj_property name="ElementShortName">IF_ID_IssueB</obj_property>
+      <obj_property name="ObjectShortName">IF_ID_IssueB</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider2">
+      <obj_property name="label">VIA A: registros de etapa</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ID_EX_rs1">
+      <obj_property name="ElementShortName">ID_EX_rs1</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_rs1</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ID_EX_rs2">
+      <obj_property name="ElementShortName">ID_EX_rs2</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_rs2</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ID_EX_rd">
+      <obj_property name="ElementShortName">ID_EX_rd</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/EX_MEM_rd">
+      <obj_property name="ElementShortName">EX_MEM_rd</obj_property>
+      <obj_property name="ObjectShortName">EX_MEM_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/MEM_WB_rd">
+      <obj_property name="ElementShortName">MEM_WB_rd</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider3">
+      <obj_property name="label">VIA B: registros de etapa</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ID_EX_B_rs1">
+      <obj_property name="ElementShortName">ID_EX_B_rs1</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_B_rs1</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ID_EX_B_rs2">
+      <obj_property name="ElementShortName">ID_EX_B_rs2</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_B_rs2</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ID_EX_B_rd">
+      <obj_property name="ElementShortName">ID_EX_B_rd</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_B_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/EX_MEM_B_rd">
+      <obj_property name="ElementShortName">EX_MEM_B_rd</obj_property>
+      <obj_property name="ObjectShortName">EX_MEM_B_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/MEM_WB_B_rd">
+      <obj_property name="ElementShortName">MEM_WB_B_rd</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_B_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider4">
+      <obj_property name="label">FORWARDING (0=reg, 1=WB A, 2=WB B, 3=MEM A, 4=MEM B)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/fwdA_A">
+      <obj_property name="ElementShortName">fwdA_A</obj_property>
+      <obj_property name="ObjectShortName">fwdA_A</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/fwdB_A">
+      <obj_property name="ElementShortName">fwdB_A</obj_property>
+      <obj_property name="ObjectShortName">fwdB_A</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/fwdA_B">
+      <obj_property name="ElementShortName">fwdA_B</obj_property>
+      <obj_property name="ObjectShortName">fwdA_B</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/fwdB_B">
+      <obj_property name="ElementShortName">fwdB_B</obj_property>
+      <obj_property name="ObjectShortName">fwdB_B</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider5">
+      <obj_property name="label">OPERANDOS Y RESULTADOS DE LAS ALU</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/alu_SrcA_fwd">
+      <obj_property name="ElementShortName">alu_SrcA_fwd</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcA_fwd</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/alu_SrcB_fwd">
+      <obj_property name="ElementShortName">alu_SrcB_fwd</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcB_fwd</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ex_ALUResult">
+      <obj_property name="ElementShortName">ex_ALUResult</obj_property>
+      <obj_property name="ObjectShortName">ex_ALUResult</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/alu_SrcA_fwd_B">
+      <obj_property name="ElementShortName">alu_SrcA_fwd_B</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcA_fwd_B</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/alu_SrcB_fwd_B">
+      <obj_property name="ElementShortName">alu_SrcB_fwd_B</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcB_fwd_B</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/ex_ALUResult_B">
+      <obj_property name="ElementShortName">ex_ALUResult_B</obj_property>
+      <obj_property name="ObjectShortName">ex_ALUResult_B</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider6">
+      <obj_property name="label">REGISTROS</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/rf/rf[3]">
+      <obj_property name="ElementShortName">rf[3]</obj_property>
+      <obj_property name="ObjectShortName">rf[3]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/rf/rf[4]">
+      <obj_property name="ElementShortName">rf[4]</obj_property>
+      <obj_property name="ObjectShortName">rf[4]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/rf/rf[5]">
+      <obj_property name="ElementShortName">rf[5]</obj_property>
+      <obj_property name="ObjectShortName">rf[5]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/rf/rf[6]">
+      <obj_property name="ElementShortName">rf[6]</obj_property>
+      <obj_property name="ObjectShortName">rf[6]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/rf/rf[7]">
+      <obj_property name="ElementShortName">rf[7]</obj_property>
+      <obj_property name="ObjectShortName">rf[7]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_dual/dut/rvd/dp/rf/rf[8]">
+      <obj_property name="ElementShortName">rf[8]</obj_property>
+      <obj_property name="ObjectShortName">rf[8]</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+</wave_config>
