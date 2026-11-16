@@ -23,7 +23,7 @@ module tb_program5();
     wire [31:0] DataAdr;
     wire        MemWrite;
 
-    top_pipeline #(.MEMFILE("program5.mem")) dut (
+    top_pipeline #(.MEMFILE("program3.mem")) dut (
         .clk(clk),
         .reset(reset),
         .WriteData(WriteData),
