@@ -11,10 +11,8 @@
 //     al dato de store / segundo operando del comparador (ForwardC).
 //   - Stall por load-use (congela PC e IF/ID, burbuja en ID/EX).
 //   - Saltos resueltos en EX: al tomarse, se anulan IF/ID e ID/EX.
-//   - Branches beq/bne/blt/bge/bltu/bgeu (comparador en EX según funct3).
-//   - jal (destino PC + imm) y jalr (destino (rs1 + imm) & ~1); ambos
-//     escriben PC+4 en rd.
-//   - lui: rs1 se fuerza a x0 para que la ALU calcule 0 + imm.
+//   - Branches beq y blt (comparador en EX según funct3).
+//   - jal: destino PC + imm, escribe PC+4 en rd.
 //////////////////////////////////////////////////////////////////////////////////
 
 module datapath_pipeline(
@@ -44,7 +42,7 @@ module datapath_pipeline(
     output [4:0]  ID_EX_rs2,
     output [4:0]  ID_EX_rd,
     output        ID_EX_ALUSrc,
-    output [3:0]  ID_EX_ALUControl,
+    output [2:0]  ID_EX_ALUControl,
     output        ID_EX_RegWrite,
     output        ID_EX_MemWrite,
     output [1:0]  ID_EX_ResultSrc,
@@ -121,12 +119,9 @@ module datapath_pipeline(
 
     wire [1:0] dec_ResultSrc, dec_ImmSrc, dec_ALUOp;
     wire       dec_MemWrite, dec_Branch, dec_ALUSrc, dec_RegWrite, dec_Jump;
-    wire       dec_JumpReg;
-    wire [3:0] dec_ALUControl;
+    wire [2:0] dec_ALUControl;
 
-    // lui no usa rs1: se fuerza a x0 para que la ALU calcule 0 + imm y para
-    // que no se dispare forwarding ni stall por un registro que no se lee.
-    wire [4:0] id_rs1 = (IF_ID_Instr[6:0] == 7'b0110111) ? 5'd0 : IF_ID_Instr[19:15];
+    wire [4:0] id_rs1 = IF_ID_Instr[19:15];
     wire [4:0] id_rs2 = IF_ID_Instr[24:20];
 
     maindec md (
@@ -137,7 +132,6 @@ module datapath_pipeline(
         .ALUSrc    (dec_ALUSrc),
         .RegWrite  (dec_RegWrite),
         .Jump      (dec_Jump),
-        .JumpReg   (dec_JumpReg),
         .ImmSrc    (dec_ImmSrc),
         .ALUOp     (dec_ALUOp)
     );
@@ -171,7 +165,6 @@ module datapath_pipeline(
 
     // ------------------------------------------------------------- ID/EX
     wire [2:0] ID_EX_Funct3;
-    wire       ID_EX_JumpReg;
 
     idex reg_idex (
         .clk           (clk),
@@ -197,7 +190,6 @@ module datapath_pipeline(
         .Jump          (dec_Jump),
         .ImmSrc        (dec_ImmSrc),
         .Funct3        (IF_ID_Instr[14:12]),
-        .JumpReg       (dec_JumpReg),
 
         .ID_EX_SrcA       (ID_EX_SrcA),
         .ID_EX_WriteData  (ID_EX_WriteData),
@@ -215,13 +207,11 @@ module datapath_pipeline(
         .ID_EX_Branch     (ID_EX_Branch),
         .ID_EX_Jump       (ID_EX_Jump),
         .ID_EX_ImmSrc     (ID_EX_ImmSrc),
-        .ID_EX_Funct3     (ID_EX_Funct3),
-        .ID_EX_JumpReg    (ID_EX_JumpReg)
+        .ID_EX_Funct3     (ID_EX_Funct3)
     );
 
     // ---------------------------------------------------------------- EX
     wire [31:0] ex_SrcB, ex_ALUResult, ex_PCTarget;
-    wire [31:0] ex_PCTargetBr, ex_PCTargetJr;
     wire        ex_Zero, ex_PCSrc;
     wire [31:0] alu_SrcA_fwd, alu_SrcB_fwd, writeData_fwd;
 
@@ -272,11 +262,7 @@ module datapath_pipeline(
     always @(*) begin
         case (ID_EX_Funct3)
             3'b000:  ex_BranchTaken = (alu_SrcA_fwd == writeData_fwd);                   // beq
-            3'b001:  ex_BranchTaken = (alu_SrcA_fwd != writeData_fwd);                   // bne
             3'b100:  ex_BranchTaken = ($signed(alu_SrcA_fwd) <  $signed(writeData_fwd)); // blt
-            3'b101:  ex_BranchTaken = ($signed(alu_SrcA_fwd) >= $signed(writeData_fwd)); // bge
-            3'b110:  ex_BranchTaken = (alu_SrcA_fwd <  writeData_fwd);                   // bltu
-            3'b111:  ex_BranchTaken = (alu_SrcA_fwd >= writeData_fwd);                   // bgeu
             default: ex_BranchTaken = 1'b0;
         endcase
     end
@@ -285,17 +271,7 @@ module datapath_pipeline(
     adder pcaddbranch (
         .a (ID_EX_PC),
         .b (ID_EX_ImmExt),
-        .y (ex_PCTargetBr)
-    );
-
-    // Destino de jalr: la ALU calcula rs1 + imm; se limpia el bit 0.
-    assign ex_PCTargetJr = {ex_ALUResult[31:1], 1'b0};
-
-    mux2 #(WIDTH) pctargetmux (
-        .d0 (ex_PCTargetBr),
-        .d1 (ex_PCTargetJr),
-        .s  (ID_EX_JumpReg),
-        .y  (ex_PCTarget)
+        .y (ex_PCTarget)
     );
 
     assign ex_PCSrc = (ID_EX_Branch & ex_BranchTaken) | ID_EX_Jump;

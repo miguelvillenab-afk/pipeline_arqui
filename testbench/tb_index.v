@@ -27,7 +27,7 @@ module tb_idex;
   reg [4:0]  rd;
 
   reg        ALUSrc;
-  reg [3:0]  ALUControl;
+  reg [2:0]  ALUControl;
   reg        RegWrite;
   reg        MemWrite;
   reg [1:0]  ResultSrc;
@@ -35,7 +35,6 @@ module tb_idex;
   reg        Jump;
   reg [1:0]  ImmSrc;
   reg [2:0]  Funct3;
-  reg        JumpReg;
 
   wire [31:0] ID_EX_SrcA;
   wire [31:0] ID_EX_WriteData;
@@ -47,7 +46,7 @@ module tb_idex;
   wire [4:0]  ID_EX_rd;
 
   wire        ID_EX_ALUSrc;
-  wire [3:0]  ID_EX_ALUControl;
+  wire [2:0]  ID_EX_ALUControl;
   wire        ID_EX_RegWrite;
   wire        ID_EX_MemWrite;
   wire [1:0]  ID_EX_ResultSrc;
@@ -55,7 +54,6 @@ module tb_idex;
   wire        ID_EX_Jump;
   wire [1:0]  ID_EX_ImmSrc;
   wire [2:0]  ID_EX_Funct3;
-  wire        ID_EX_JumpReg;
 
   integer errors;
 
@@ -83,7 +81,6 @@ module tb_idex;
     .Jump          (Jump),
     .ImmSrc        (ImmSrc),
     .Funct3        (Funct3),
-    .JumpReg       (JumpReg),
 
     .ID_EX_SrcA       (ID_EX_SrcA),
     .ID_EX_WriteData  (ID_EX_WriteData),
@@ -101,8 +98,7 @@ module tb_idex;
     .ID_EX_Branch     (ID_EX_Branch),
     .ID_EX_Jump       (ID_EX_Jump),
     .ID_EX_ImmSrc     (ID_EX_ImmSrc),
-    .ID_EX_Funct3     (ID_EX_Funct3),
-    .ID_EX_JumpReg    (ID_EX_JumpReg)
+    .ID_EX_Funct3     (ID_EX_Funct3)
   );
 
   always #5 clk = ~clk;
@@ -170,7 +166,6 @@ module tb_idex;
     Jump         = 0;
     ImmSrc       = 0;
     Funct3       = 0;
-    JumpReg      = 0;
     errors       = 0;
 
     // Reset
@@ -194,7 +189,7 @@ module tb_idex;
     rs2        = 5'd2;
     rd         = 5'd3;
     ALUSrc     = 1'b1;
-    ALUControl = 4'b1001;
+    ALUControl = 3'b101;
     RegWrite   = 1'b1;
     MemWrite   = 1'b1;
     ResultSrc  = 2'b01;
@@ -202,7 +197,6 @@ module tb_idex;
     Jump       = 1'b1;
     ImmSrc     = 2'b10;
     Funct3     = 3'b101;
-    JumpReg    = 1'b1;
 
     @(posedge clk); #1;
     check32(ID_EX_SrcA,      32'hAAAA_AAAA, "captura SrcA");
@@ -214,7 +208,7 @@ module tb_idex;
     check5 (ID_EX_rs2,       5'd2,          "captura rs2");
     check5 (ID_EX_rd,        5'd3,          "captura rd");
     check1 (ID_EX_ALUSrc,    1'b1,          "captura ALUSrc");
-    check4 (ID_EX_ALUControl,4'b1001,       "captura ALUControl");
+    check4 (ID_EX_ALUControl,4'b0101,       "captura ALUControl");
     check1 (ID_EX_RegWrite,  1'b1,          "captura RegWrite");
     check1 (ID_EX_MemWrite,  1'b1,          "captura MemWrite");
     check2 (ID_EX_ResultSrc, 2'b01,         "captura ResultSrc");
@@ -222,7 +216,6 @@ module tb_idex;
     check1 (ID_EX_Jump,      1'b1,          "captura Jump");
     check2 (ID_EX_ImmSrc,    2'b10,         "captura ImmSrc");
     check3 (ID_EX_Funct3,    3'b101,        "captura Funct3");
-    check1 (ID_EX_JumpReg,   1'b1,          "captura JumpReg");
 
     // Stall: debe mantener todo
     @(negedge clk);
@@ -236,7 +229,7 @@ module tb_idex;
     rs2        = 5'd5;
     rd         = 5'd6;
     ALUSrc     = 1'b0;
-    ALUControl = 4'b0001;
+    ALUControl = 3'b001;
     RegWrite   = 1'b0;
     MemWrite   = 1'b0;
     ResultSrc  = 2'b10;
@@ -244,7 +237,6 @@ module tb_idex;
     Jump       = 1'b0;
     ImmSrc     = 2'b01;
     Funct3     = 3'b000;
-    JumpReg    = 1'b0;
 
     @(posedge clk); #1;
     check32(ID_EX_SrcA,      32'hAAAA_AAAA, "stall mantiene SrcA");
@@ -267,7 +259,6 @@ module tb_idex;
     check1 (ID_EX_MemWrite,  1'b0,  "flush limpia MemWrite");
     check1 (ID_EX_Branch,    1'b0,  "flush limpia Branch");
     check1 (ID_EX_Jump,      1'b0,  "flush limpia Jump");
-    check1 (ID_EX_JumpReg,   1'b0,  "flush limpia JumpReg");
 
     // Flush + stall: gana flush
     @(negedge clk);

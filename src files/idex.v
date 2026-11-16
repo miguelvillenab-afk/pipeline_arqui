@@ -10,8 +10,7 @@
 //
 // Prioridad: reset > flush > stall > captura.
 //
-// Funct3 y JumpReg se agregaron para el comparador de branches
-// (beq/bne/blt/bge/bltu/bgeu) y para jalr.
+// Funct3 se agregó para el comparador de branches (beq/blt).
 //
 // Se añadió IF_ID_PC / ID_EX_PC respecto al contrato original porque el
 // sumador de branch/jal necesita el PC de la instrucción que está en EX:
@@ -38,7 +37,7 @@ module idex(
     input  [4:0]  rd,
 
     input         ALUSrc,
-    input  [3:0]  ALUControl,
+    input  [2:0]  ALUControl,
     input         RegWrite,
     input         MemWrite,
     input  [1:0]  ResultSrc,
@@ -46,7 +45,6 @@ module idex(
     input         Jump,
     input  [1:0]  ImmSrc,
     input  [2:0]  Funct3,
-    input         JumpReg,
 
     // Salidas hacia la etapa EX
     output [31:0] ID_EX_SrcA,
@@ -59,21 +57,20 @@ module idex(
     output [4:0]  ID_EX_rd,
 
     output        ID_EX_ALUSrc,
-    output [3:0]  ID_EX_ALUControl,
+    output [2:0]  ID_EX_ALUControl,
     output        ID_EX_RegWrite,
     output        ID_EX_MemWrite,
     output [1:0]  ID_EX_ResultSrc,
     output        ID_EX_Branch,
     output        ID_EX_Jump,
     output [1:0]  ID_EX_ImmSrc,
-    output [2:0]  ID_EX_Funct3,
-    output        ID_EX_JumpReg
+    output [2:0]  ID_EX_Funct3
     );
 
-    // 5 campos de 32 bits + 3 de 5 bits + 17 bits de control = 192 bits
-    // (control: ALUSrc 1, ALUControl 4, RegWrite 1, MemWrite 1, ResultSrc 2,
-    //  Branch 1, Jump 1, ImmSrc 2, Funct3 3, JumpReg 1)
-    localparam ID_EX_WIDTH = 32*5 + 5*3 + 17;
+    // 5 campos de 32 bits + 3 de 5 bits + 15 bits de control = 190 bits
+    // (control: ALUSrc 1, ALUControl 3, RegWrite 1, MemWrite 1, ResultSrc 2,
+    //  Branch 1, Jump 1, ImmSrc 2, Funct3 3)
+    localparam ID_EX_WIDTH = 32*5 + 5*3 + 15;
 
     wire [ID_EX_WIDTH-1:0] d_concat;
     wire [ID_EX_WIDTH-1:0] q_concat;
@@ -95,8 +92,7 @@ module idex(
         Branch,
         Jump,
         ImmSrc,
-        Funct3,
-        JumpReg
+        Funct3
     };
 
     flopenrc #(.WIDTH(ID_EX_WIDTH)) reg_idex (
@@ -125,8 +121,7 @@ module idex(
         ID_EX_Branch,
         ID_EX_Jump,
         ID_EX_ImmSrc,
-        ID_EX_Funct3,
-        ID_EX_JumpReg
+        ID_EX_Funct3
     } = q_concat;
 
 endmodule

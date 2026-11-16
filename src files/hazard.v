@@ -6,14 +6,14 @@
 //   00 = valor leído en ID (sin forwarding)
 //   01 = resultado de WB  (instrucción en MEM/WB)
 //   10 = ALUResult de MEM (instrucción en EX/MEM)  -> prioridad sobre WB
-//   ForwardA: operando rs1 (SrcA de la ALU, base de jalr, comparador de branch)
+//   ForwardA: operando rs1 (SrcA de la ALU y comparador de branch)
 //   ForwardB: operando rs2 de la ALU (solo si ALUSrc = 0)
 //   ForwardC: dato rs2 sin pasar por ALUSrc (dato de sw y comparador de branch)
 //
 // Load-use: si hay un lw en EX y la instrucción en ID usa su rd, se congela
 // PC e IF/ID y se inserta una burbuja en ID/EX (flush). El lw sigue avanzando.
 //
-// Salto tomado en EX (branch o jal/jalr): se anulan las dos instrucciones del
+// Salto tomado en EX (beq, blt o jal): se anulan las dos instrucciones del
 // camino incorrecto (IF/ID e ID/EX).
 //////////////////////////////////////////////////////////////////////////////////
 
