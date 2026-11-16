@@ -9,8 +9,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 
 module top_pipeline #(
-    // Programa a cargar en imem (por defecto el de siempre).
-    parameter MEMFILE = "program1.mem"
+    // Programa a cargar en imem (por defecto, el programa del profesor).
+    parameter MEMFILE = "prueba_final.mem"
     )(
     input  clk,
     input  reset,
