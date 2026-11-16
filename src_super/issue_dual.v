@@ -19,9 +19,7 @@ module issue_dual(
                      OP_RTYPE  = 7'b0110011,
                      OP_BRANCH = 7'b1100011,
                      OP_ITYPE  = 7'b0010011,
-                     OP_JAL    = 7'b1101111,
-                     OP_JALR   = 7'b1100111,
-                     OP_LUI    = 7'b0110111;
+                     OP_JAL    = 7'b1101111;
 
     wire [6:0] op_A = Instr_A[6:0];
     wire [6:0] op_B = Instr_B[6:0];
@@ -29,17 +27,15 @@ module issue_dual(
     wire A_is_mem = (op_A == OP_LOAD) || (op_A == OP_STORE);
     wire B_is_mem = (op_B == OP_LOAD) || (op_B == OP_STORE);
 
-    wire A_is_branch = (op_A == OP_BRANCH) || (op_A == OP_JAL) || (op_A == OP_JALR);
-    wire B_is_branch = (op_B == OP_BRANCH) || (op_B == OP_JAL) || (op_B == OP_JALR);
+    wire A_is_branch = (op_A == OP_BRANCH) || (op_A == OP_JAL);
+    wire B_is_branch = (op_B == OP_BRANCH) || (op_B == OP_JAL);
 
     // Store y Branch no escriben registro
     wire A_writes_reg = (op_A == OP_RTYPE) || (op_A == OP_ITYPE) ||
-                        (op_A == OP_LUI)   || (op_A == OP_LOAD)  ||
-                        (op_A == OP_JAL)   || (op_A == OP_JALR);
+                        (op_A == OP_LOAD)  || (op_A == OP_JAL);
 
     wire B_writes_reg = (op_B == OP_RTYPE) || (op_B == OP_ITYPE) ||
-                        (op_B == OP_LUI)   || (op_B == OP_LOAD)  ||
-                        (op_B == OP_JAL)   || (op_B == OP_JALR);
+                        (op_B == OP_LOAD)  || (op_B == OP_JAL);
 
     wire [4:0] A_rd  = Instr_A[11:7];
     wire [4:0] B_rd  = Instr_B[11:7];
@@ -50,7 +46,7 @@ module issue_dual(
     wire branch_conflict = A_is_branch && B_is_branch;
 
     // RAW: A escribe un registro que B lee.
-    // Nota: compara rs2 aunque B no lo use (I-type, LUI, JAL), lo que
+    // Nota: compara rs2 aunque B no lo use (I-type, JAL), lo que
     // genera falsos positivos y baja el IPC.
     wire raw = A_writes_reg && (A_rd != 5'd0) &&
                ((A_rd == B_rs1) || (A_rd == B_rs2));

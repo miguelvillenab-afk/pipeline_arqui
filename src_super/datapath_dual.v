@@ -26,7 +26,7 @@ module datapath_dual(
     output [31:0] ID_B_WriteData,
     output [31:0] ID_B_ImmExt,
     output        ID_B_ALUSrc,
-    output [3:0]  ID_B_ALUControl,
+    output [2:0]  ID_B_ALUControl,
     output        ID_B_RegWrite,
     output        ID_B_MemWrite,
     output [1:0]  ID_B_ResultSrc,
@@ -42,7 +42,7 @@ module datapath_dual(
     output [4:0]  ID_EX_B_rs2,
     output [4:0]  ID_EX_B_rd,
     output        ID_EX_B_ALUSrc,
-    output [3:0]  ID_EX_B_ALUControl,
+    output [2:0]  ID_EX_B_ALUControl,
     output        ID_EX_B_RegWrite,
     output        ID_EX_B_MemWrite,
     output [1:0]  ID_EX_B_ResultSrc,
@@ -59,7 +59,7 @@ module datapath_dual(
     output [4:0]  ID_EX_rs2,
     output [4:0]  ID_EX_rd,
     output        ID_EX_ALUSrc,
-    output [3:0]  ID_EX_ALUControl,
+    output [2:0]  ID_EX_ALUControl,
     output        ID_EX_RegWrite,
     output        ID_EX_MemWrite,
     output [1:0]  ID_EX_ResultSrc,
@@ -89,8 +89,8 @@ module datapath_dual(
 
     localparam WIDTH = 32;
     
-    wire [4:0] rs1_A_eff = (IF_ID_Instr[6:0]   == 7'b0110111) ? 5'd0 : IF_ID_Instr[19:15];
-    wire [4:0] rs1_B_eff = (IF_ID_Instr_B[6:0] == 7'b0110111) ? 5'd0 : IF_ID_Instr_B[19:15];
+    wire [4:0] rs1_A_eff = IF_ID_Instr[19:15];
+    wire [4:0] rs1_B_eff = IF_ID_Instr_B[19:15];
 
     // IF
     wire [31:0] PCNext, PCPlus4, PCPlus8;
@@ -120,7 +120,7 @@ module datapath_dual(
     wire [1:0]  MEM_WB_B_ResultSrc;
 
     // flush_exmem_b queda en 0 a propósito: el issue unit nunca emite B cuando
-    // A es un salto (beq/bne/.../jal/jalr), así que si A salta en EX, la vía B
+    // A es un salto (beq, blt o jal), así que si A salta en EX, la vía B
     // de ese par ya es una burbuja y no hay nada que anular.
     wire flush_exmem_b;
     assign flush_exmem_b = 1'b0;
@@ -153,13 +153,12 @@ module datapath_dual(
     wire [31:0] id_SrcA, id_WriteData, ImmExt;
     wire [1:0] dec_ResultSrc, dec_ImmSrc, dec_ALUOp;
     wire dec_MemWrite, dec_Branch, dec_ALUSrc, dec_RegWrite, dec_Jump;
-    wire [3:0] dec_ALUControl;
-    wire       dec_JumpReg;
+    wire [2:0] dec_ALUControl;
 
     maindec md (
         .op(IF_ID_Instr[6:0]), .ResultSrc(dec_ResultSrc), .MemWrite(dec_MemWrite),
         .Branch(dec_Branch), .ALUSrc(dec_ALUSrc), .RegWrite(dec_RegWrite),
-        .Jump(dec_Jump), .JumpReg(dec_JumpReg), .ImmSrc(dec_ImmSrc), .ALUOp(dec_ALUOp)
+        .Jump(dec_Jump), .ImmSrc(dec_ImmSrc), .ALUOp(dec_ALUOp)
     );
     aludec ad (
         .opb5(IF_ID_Instr[5]), .funct3(IF_ID_Instr[14:12]),
@@ -182,13 +181,12 @@ module datapath_dual(
     // === ID vía B (Dual Decode) ===
     wire [1:0] dec_B_ResultSrc, dec_B_ImmSrc, dec_B_ALUOp;
     wire dec_B_MemWrite, dec_B_Branch, dec_B_ALUSrc, dec_B_RegWrite, dec_B_Jump;
-    wire [3:0] dec_B_ALUControl;
-    wire       dec_B_JumpReg;
+    wire [2:0] dec_B_ALUControl;
 
     maindec md_b (
         .op(IF_ID_Instr_B[6:0]), .ResultSrc(dec_B_ResultSrc), .MemWrite(dec_B_MemWrite),
         .Branch(dec_B_Branch), .ALUSrc(dec_B_ALUSrc), .RegWrite(dec_B_RegWrite),
-        .Jump(dec_B_Jump), .JumpReg(dec_B_JumpReg), .ImmSrc(dec_B_ImmSrc), .ALUOp(dec_B_ALUOp)
+        .Jump(dec_B_Jump), .ImmSrc(dec_B_ImmSrc), .ALUOp(dec_B_ALUOp)
     );
     aludec ad_b (
         .opb5(IF_ID_Instr_B[5]), .funct3(IF_ID_Instr_B[14:12]),
@@ -211,7 +209,6 @@ module datapath_dual(
 
     // === ID/EX A ===
     wire [2:0] ID_EX_Funct3,   ID_EX_B_Funct3;
-    wire       ID_EX_JumpReg,  ID_EX_B_JumpReg;
 
     idex reg_idex (
         .clk(clk), .reset(reset), .stall_ID_EX(1'b0), .flush_ID_EX(flush_idex_a_hz),
@@ -221,7 +218,7 @@ module datapath_dual(
         .ALUSrc(dec_ALUSrc), .ALUControl(dec_ALUControl), .RegWrite(dec_RegWrite),
         .MemWrite(dec_MemWrite), .ResultSrc(dec_ResultSrc),
         .Branch(dec_Branch), .Jump(dec_Jump), .ImmSrc(dec_ImmSrc),
-        .Funct3(IF_ID_Instr[14:12]), .JumpReg(dec_JumpReg),
+        .Funct3(IF_ID_Instr[14:12]),
         .ID_EX_SrcA(ID_EX_SrcA), .ID_EX_WriteData(ID_EX_WriteData),
         .ID_EX_ImmExt(ID_EX_ImmExt), .ID_EX_PC(ID_EX_PC), .ID_EX_PC4(ID_EX_PC4),
         .ID_EX_rs1(ID_EX_rs1), .ID_EX_rs2(ID_EX_rs2), .ID_EX_rd(ID_EX_rd),
@@ -229,7 +226,7 @@ module datapath_dual(
         .ID_EX_RegWrite(ID_EX_RegWrite), .ID_EX_MemWrite(ID_EX_MemWrite),
         .ID_EX_ResultSrc(ID_EX_ResultSrc), .ID_EX_Branch(ID_EX_Branch),
         .ID_EX_Jump(ID_EX_Jump), .ID_EX_ImmSrc(ID_EX_ImmSrc),
-        .ID_EX_Funct3(ID_EX_Funct3), .ID_EX_JumpReg(ID_EX_JumpReg)
+        .ID_EX_Funct3(ID_EX_Funct3)
     );
 
     // === ID/EX B ===
@@ -242,7 +239,7 @@ module datapath_dual(
         .RegWrite(ID_B_RegWrite), .MemWrite(ID_B_MemWrite),
         .ResultSrc(ID_B_ResultSrc), .Branch(ID_B_Branch), .Jump(ID_B_Jump),
         .ImmSrc(dec_B_ImmSrc),
-        .Funct3(IF_ID_Instr_B[14:12]), .JumpReg(dec_B_JumpReg),
+        .Funct3(IF_ID_Instr_B[14:12]),
         .ID_EX_SrcA(ID_EX_B_SrcA), .ID_EX_WriteData(ID_EX_B_WriteData),
         .ID_EX_ImmExt(ID_EX_B_ImmExt), .ID_EX_PC(ID_EX_B_PC), .ID_EX_PC4(ID_EX_B_PC4),
         .ID_EX_rs1(ID_EX_B_rs1), .ID_EX_rs2(ID_EX_B_rs2), .ID_EX_rd(ID_EX_B_rd),
@@ -250,7 +247,7 @@ module datapath_dual(
         .ID_EX_RegWrite(ID_EX_B_RegWrite), .ID_EX_MemWrite(ID_EX_B_MemWrite),
         .ID_EX_ResultSrc(ID_EX_B_ResultSrc), .ID_EX_Branch(ID_EX_B_Branch),
         .ID_EX_Jump(ID_EX_B_Jump), .ID_EX_ImmSrc(ID_EX_B_ImmSrc),
-        .ID_EX_Funct3(ID_EX_B_Funct3), .ID_EX_JumpReg(ID_EX_B_JumpReg)
+        .ID_EX_Funct3(ID_EX_B_Funct3)
     );
 
     // === EX vía A ===
@@ -277,19 +274,13 @@ module datapath_dual(
     always @(*) begin
         case (ID_EX_Funct3)
             3'b000:  ex_BranchTaken = (alu_SrcA_fwd == writeData_fwd);                   // beq
-            3'b001:  ex_BranchTaken = (alu_SrcA_fwd != writeData_fwd);                   // bne
             3'b100:  ex_BranchTaken = ($signed(alu_SrcA_fwd) <  $signed(writeData_fwd)); // blt
-            3'b101:  ex_BranchTaken = ($signed(alu_SrcA_fwd) >= $signed(writeData_fwd)); // bge
-            3'b110:  ex_BranchTaken = (alu_SrcA_fwd <  writeData_fwd);                   // bltu
-            3'b111:  ex_BranchTaken = (alu_SrcA_fwd >= writeData_fwd);                   // bgeu
             default: ex_BranchTaken = 1'b0;
         endcase
     end
 
-    // Destino: PC + imm para branch/jal; rs1 + imm (bit 0 en 0) para jalr.
-    wire [31:0] ex_PCTargetBr;
-    adder pcaddbranch (.a(ID_EX_PC), .b(ID_EX_ImmExt), .y(ex_PCTargetBr));
-    assign ex_PCTarget = ID_EX_JumpReg ? {ex_ALUResult[31:1], 1'b0} : ex_PCTargetBr;
+    // Destino de branch/jal: PC de la instrucción en EX + inmediato.
+    adder pcaddbranch (.a(ID_EX_PC), .b(ID_EX_ImmExt), .y(ex_PCTarget));
     assign ex_PCSrc = (ID_EX_Branch & ex_BranchTaken) | ID_EX_Jump;
 
     // === EX vía B ===
@@ -313,18 +304,12 @@ module datapath_dual(
     always @(*) begin
         case (ID_EX_B_Funct3)
             3'b000:  ex_BranchTaken_B = (alu_SrcA_fwd_B == writeData_fwd_B);                   // beq
-            3'b001:  ex_BranchTaken_B = (alu_SrcA_fwd_B != writeData_fwd_B);                   // bne
             3'b100:  ex_BranchTaken_B = ($signed(alu_SrcA_fwd_B) <  $signed(writeData_fwd_B)); // blt
-            3'b101:  ex_BranchTaken_B = ($signed(alu_SrcA_fwd_B) >= $signed(writeData_fwd_B)); // bge
-            3'b110:  ex_BranchTaken_B = (alu_SrcA_fwd_B <  writeData_fwd_B);                   // bltu
-            3'b111:  ex_BranchTaken_B = (alu_SrcA_fwd_B >= writeData_fwd_B);                   // bgeu
             default: ex_BranchTaken_B = 1'b0;
         endcase
     end
 
-    wire [31:0] ex_PCTargetBr_B;
-    adder pcaddbranch_b (.a(ID_EX_B_PC), .b(ID_EX_B_ImmExt), .y(ex_PCTargetBr_B));
-    assign ex_PCTarget_B = ID_EX_B_JumpReg ? {ex_ALUResult_B[31:1], 1'b0} : ex_PCTargetBr_B;
+    adder pcaddbranch_b (.a(ID_EX_B_PC), .b(ID_EX_B_ImmExt), .y(ex_PCTarget_B));
     assign ex_PCSrc_B = (ID_EX_B_Branch & ex_BranchTaken_B) | ID_EX_B_Jump;
 
     // === E2.3: PC mux de 4 entradas ===
