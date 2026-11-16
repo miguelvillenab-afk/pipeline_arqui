@@ -3,10 +3,10 @@
    <wave_state>
    </wave_state>
    <db_ref_list>
-      <db_ref path="tb_program5_behav.wdb" id="1">
+      <db_ref path="tb_top_pipeline_behav.wdb" id="1">
          <top_modules>
             <top_module name="glbl" />
-            <top_module name="tb_program5" />
+            <top_module name="tb_top_pipeline" />
          </top_modules>
       </db_ref>
    </db_ref_list>
@@ -21,134 +21,134 @@
    </column_width_setting>
    <WVObjectSize size="33" />
    <wvobject type="divider" fp_name="divider1">
-      <obj_property name="ElementShortName">Reloj y control</obj_property>
-      <obj_property name="ObjectShortName">Reloj y control</obj_property>
+      <obj_property name="label">Reloj y control</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/clk" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/clk" type="logic">
       <obj_property name="ElementShortName">clk</obj_property>
       <obj_property name="ObjectShortName">clk</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/reset" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/reset" type="logic">
       <obj_property name="ElementShortName">reset</obj_property>
       <obj_property name="ObjectShortName">reset</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider2">
-      <obj_property name="ElementShortName">IF / ID</obj_property>
-      <obj_property name="ObjectShortName">IF / ID</obj_property>
+      <obj_property name="label">IF / ID</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/PC" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/PC" type="array">
       <obj_property name="ElementShortName">PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">PC[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/IF_ID_Instr" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/IF_ID_Instr" type="array">
       <obj_property name="ElementShortName">IF_ID_Instr[31:0]</obj_property>
       <obj_property name="ObjectShortName">IF_ID_Instr[31:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider3">
-      <obj_property name="ElementShortName">EX - ALU y forwarding</obj_property>
-      <obj_property name="ObjectShortName">EX - ALU y forwarding</obj_property>
+      <obj_property name="label">EX - ALU y forwarding</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ID_EX_PC" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_PC" type="array">
       <obj_property name="ElementShortName">ID_EX_PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">ID_EX_PC[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ID_EX_rd" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_rd" type="array">
       <obj_property name="ElementShortName">ID_EX_rd[4:0]</obj_property>
       <obj_property name="ObjectShortName">ID_EX_rd[4:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ID_EX_ALUControl" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_ALUControl" type="array">
       <obj_property name="ElementShortName">ID_EX_ALUControl[2:0]</obj_property>
       <obj_property name="ObjectShortName">ID_EX_ALUControl[2:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ForwardA" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ForwardA" type="array">
       <obj_property name="ElementShortName">ForwardA[1:0]</obj_property>
       <obj_property name="ObjectShortName">ForwardA[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ForwardB" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ForwardB" type="array">
       <obj_property name="ElementShortName">ForwardB[1:0]</obj_property>
       <obj_property name="ObjectShortName">ForwardB[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ForwardC" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ForwardC" type="array">
       <obj_property name="ElementShortName">ForwardC[1:0]</obj_property>
       <obj_property name="ObjectShortName">ForwardC[1:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/alu_SrcA_fwd" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcA_fwd" type="array">
       <obj_property name="ElementShortName">alu_SrcA_fwd[31:0]</obj_property>
       <obj_property name="ObjectShortName">alu_SrcA_fwd[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/alu_SrcB_fwd" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcB_fwd" type="array">
       <obj_property name="ElementShortName">alu_SrcB_fwd[31:0]</obj_property>
       <obj_property name="ObjectShortName">alu_SrcB_fwd[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ex_ALUResult" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_ALUResult" type="array">
       <obj_property name="ElementShortName">ex_ALUResult[31:0]</obj_property>
       <obj_property name="ObjectShortName">ex_ALUResult[31:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider4">
-      <obj_property name="ElementShortName">Saltos (beq / blt / jal)</obj_property>
-      <obj_property name="ObjectShortName">Saltos (beq / blt / jal)</obj_property>
+      <obj_property name="label">Saltos (beq / blt / jal)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ID_EX_Branch" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_Branch" type="logic">
       <obj_property name="ElementShortName">ID_EX_Branch</obj_property>
       <obj_property name="ObjectShortName">ID_EX_Branch</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ID_EX_Jump" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_Jump" type="logic">
       <obj_property name="ElementShortName">ID_EX_Jump</obj_property>
       <obj_property name="ObjectShortName">ID_EX_Jump</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ex_BranchTaken" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_BranchTaken" type="logic">
       <obj_property name="ElementShortName">ex_BranchTaken</obj_property>
       <obj_property name="ObjectShortName">ex_BranchTaken</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ex_PCSrc" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_PCSrc" type="logic">
       <obj_property name="ElementShortName">ex_PCSrc</obj_property>
       <obj_property name="ObjectShortName">ex_PCSrc</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/ex_PCTarget" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/ex_PCTarget" type="array">
       <obj_property name="ElementShortName">ex_PCTarget[31:0]</obj_property>
       <obj_property name="ObjectShortName">ex_PCTarget[31:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider5">
-      <obj_property name="ElementShortName">Hazards (stall / flush)</obj_property>
-      <obj_property name="ObjectShortName">Hazards (stall / flush)</obj_property>
+      <obj_property name="label">Hazards (stall / flush)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/stall_ifid_hz" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/stall_ifid_hz" type="logic">
       <obj_property name="ElementShortName">stall_ifid_hz</obj_property>
       <obj_property name="ObjectShortName">stall_ifid_hz</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/flush_ifid_hz" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/flush_ifid_hz" type="logic">
       <obj_property name="ElementShortName">flush_ifid_hz</obj_property>
       <obj_property name="ObjectShortName">flush_ifid_hz</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/flush_idex_hz" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/flush_idex_hz" type="logic">
       <obj_property name="ElementShortName">flush_idex_hz</obj_property>
       <obj_property name="ObjectShortName">flush_idex_hz</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider6">
-      <obj_property name="ElementShortName">Memoria (sw / lw)</obj_property>
-      <obj_property name="ObjectShortName">Memoria (sw / lw)</obj_property>
+      <obj_property name="label">Memoria (sw / lw)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/MemWrite" type="logic">
+   <wvobject fp_name="/tb_top_pipeline/MemWrite" type="logic">
       <obj_property name="ElementShortName">MemWrite</obj_property>
       <obj_property name="ObjectShortName">MemWrite</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/DataAdr" type="array">
+   <wvobject fp_name="/tb_top_pipeline/DataAdr" type="array">
       <obj_property name="ElementShortName">DataAdr[31:0]</obj_property>
       <obj_property name="ObjectShortName">DataAdr[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/WriteData" type="array">
+   <wvobject fp_name="/tb_top_pipeline/WriteData" type="array">
       <obj_property name="ElementShortName">WriteData[31:0]</obj_property>
       <obj_property name="ObjectShortName">WriteData[31:0]</obj_property>
    </wvobject>
    <wvobject type="divider" fp_name="divider7">
-      <obj_property name="ElementShortName">Registros</obj_property>
-      <obj_property name="ObjectShortName">Registros</obj_property>
+      <obj_property name="label">Registros</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/wb_Result" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/wb_Result" type="array">
       <obj_property name="ElementShortName">wb_Result[31:0]</obj_property>
       <obj_property name="ObjectShortName">wb_Result[31:0]</obj_property>
    </wvobject>
-   <wvobject fp_name="/tb_program5/dut/rvp/dp/rf/rf" type="array">
+   <wvobject fp_name="/tb_top_pipeline/dut/rvp/dp/rf/rf" type="array">
       <obj_property name="ElementShortName">rf[0:31][31:0]</obj_property>
       <obj_property name="ObjectShortName">rf[0:31][31:0]</obj_property>
       <obj_property name="isExpanded"></obj_property>
