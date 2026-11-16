@@ -11,14 +11,14 @@
    </db_ref_list>
    <zoom_setting>
       <ZoomStartTime time="160.000 ns"></ZoomStartTime>
-      <ZoomEndTime time="200.000 ns"></ZoomEndTime>
+      <ZoomEndTime time="210.000 ns"></ZoomEndTime>
       <Cursor1Time time="180.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="190"></NameColumnWidth>
       <ValueColumnWidth column_width="110"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="13" />
+   <WVObjectSize size="28" />
    <wvobject type="divider" fp_name="divider1">
       <obj_property name="label">CONTROL</obj_property>
       <obj_property name="DisplayName">label</obj_property>
@@ -37,6 +37,10 @@
       <obj_property name="ObjectShortName">IF_ID_Instr</obj_property>
       <obj_property name="Radix">HEXRADIX</obj_property>
    </wvobject>
+   <wvobject type="divider" fp_name="divider2">
+      <obj_property name="label">HAZARD LOAD-USE</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
    <wvobject type="logic" fp_name="/tb_top_pipeline/dut/rvp/dp/stall_ifid_hz">
       <obj_property name="ElementShortName">stall_ifid_hz</obj_property>
       <obj_property name="ObjectShortName">stall_ifid_hz</obj_property>
@@ -45,10 +49,77 @@
       <obj_property name="ElementShortName">flush_idex_hz</obj_property>
       <obj_property name="ObjectShortName">flush_idex_hz</obj_property>
    </wvobject>
+   <wvobject type="divider" fp_name="divider3">
+      <obj_property name="label">REGISTROS DE ETAPA</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_rs1">
+      <obj_property name="ElementShortName">ID_EX_rs1</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_rs1</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_rs2">
+      <obj_property name="ElementShortName">ID_EX_rs2</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_rs2</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
    <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/ID_EX_rd">
       <obj_property name="ElementShortName">ID_EX_rd</obj_property>
       <obj_property name="ObjectShortName">ID_EX_rd</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/EX_MEM_rd">
+      <obj_property name="ElementShortName">EX_MEM_rd</obj_property>
+      <obj_property name="ObjectShortName">EX_MEM_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/MEM_WB_rd">
+      <obj_property name="ElementShortName">MEM_WB_rd</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_rd</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider4">
+      <obj_property name="label">FORWARDING (0=registro, 1=desde WB, 2=desde MEM)</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/ForwardA">
+      <obj_property name="ElementShortName">ForwardA</obj_property>
+      <obj_property name="ObjectShortName">ForwardA</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/ForwardB">
+      <obj_property name="ElementShortName">ForwardB</obj_property>
+      <obj_property name="ObjectShortName">ForwardB</obj_property>
+      <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/EX_MEM_ALUResult">
+      <obj_property name="ElementShortName">EX_MEM_ALUResult</obj_property>
+      <obj_property name="ObjectShortName">EX_MEM_ALUResult</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/wb_Result">
+      <obj_property name="ElementShortName">wb_Result</obj_property>
+      <obj_property name="ObjectShortName">wb_Result</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcA_fwd">
+      <obj_property name="ElementShortName">alu_SrcA_fwd</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcA_fwd</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/alu_SrcB_fwd">
+      <obj_property name="ElementShortName">alu_SrcB_fwd</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcB_fwd</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="array" fp_name="/tb_top_pipeline/dut/rvp/dp/ex_ALUResult">
+      <obj_property name="ElementShortName">ex_ALUResult</obj_property>
+      <obj_property name="ObjectShortName">ex_ALUResult</obj_property>
+      <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
+   </wvobject>
+   <wvobject type="divider" fp_name="divider5">
+      <obj_property name="label">MEMORIA</obj_property>
+      <obj_property name="DisplayName">label</obj_property>
    </wvobject>
    <wvobject type="logic" fp_name="/tb_top_pipeline/MemWrite">
       <obj_property name="ElementShortName">MemWrite</obj_property>
@@ -59,12 +130,12 @@
       <obj_property name="ObjectShortName">DataAdr</obj_property>
       <obj_property name="Radix">UNSIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject type="array" fp_name="/tb_top_pipeline/WriteData">
-      <obj_property name="ElementShortName">WriteData</obj_property>
-      <obj_property name="ObjectShortName">WriteData</obj_property>
+   <wvobject type="array" fp_name="/tb_top_pipeline/M1536">
+      <obj_property name="ElementShortName">M1536</obj_property>
+      <obj_property name="ObjectShortName">M1536</obj_property>
       <obj_property name="Radix">SIGNEDDECRADIX</obj_property>
    </wvobject>
-   <wvobject type="divider" fp_name="divider2">
+   <wvobject type="divider" fp_name="divider6">
       <obj_property name="label">REGISTROS</obj_property>
       <obj_property name="DisplayName">label</obj_property>
    </wvobject>
