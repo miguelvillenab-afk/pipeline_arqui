@@ -1,0 +1,43 @@
+60000093  // 000: addi x1, x0, 1536                  x1 = 1536: direccion base del arreglo
+00700113  // 004: addi x2, x0, 7                     x2 = 7
+0020a023  // 008: sw   x2, 0(x1)                     arreglo[0] = 7 (1536)
+ffd00193  // 00c: addi x3, x0, -3                    x3 = -3
+0030a223  // 010: sw   x3, 4(x1)                     arreglo[1] = -3 (1540)
+00c00213  // 014: addi x4, x0, 12                    x4 = 12
+0040a423  // 018: sw   x4, 8(x1)                     arreglo[2] = 12 (1544)
+0020a623  // 01c: sw   x2, 12(x1)                    arreglo[3] = 7 (1548)
+0000a823  // 020: sw   x0, 16(x1)                    arreglo[4] = 0 (1552)
+01900293  // 024: addi x5, x0, 25                    x5 = 25
+0050aa23  // 028: sw   x5, 20(x1)                    arreglo[5] = 25 (1556)
+0020ac23  // 02c: sw   x2, 24(x1)                    arreglo[6] = 7 (1560)
+ff800313  // 030: addi x6, x0, -8                    x6 = -8
+0060ae23  // 034: sw   x6, 28(x1)                    arreglo[7] = -8 (1564)
+00000593  // 038: addi x11, x0, 0                    suma = 0
+00700793  // 03c: addi x15, x0, 7                    x15 = 7: clave a contar
+00000b13  // 040: addi x22, x0, 0                    contador de elementos que NO son 7 = 0
+02008913  // 044: addi x18, x1, 32                   x18 = 1568: fin del arreglo
+0000a603  // 048: lw   x12, 0(x1)                    maximo = arreglo[0]
+00400c93  // 04c: addi x25, x0, 4                    pasadas que faltan = 4
+00100d93  // 050: addi x27, x0, 1                    x27 = 1 (constante para comparar)
+000088b3  // 054: pasada: add  x17, x1, x0           puntero = inicio del arreglo
+0008aa03  // 058: recorrido: lw   x20, 0(x17)        x20 = elemento actual
+014585b3  // 05c: add  x11, x11, x20                 suma += elemento
+00ca2d33  // 060: slt  x26, x20, x12                 x26 = (elemento < maximo)
+01bd0463  // 064: beq  x26, x27, no_max              SALTO: si elemento < maximo, no cambia el maximo
+000a0633  // 068: add  x12, x20, x0                  maximo = elemento (solo si no salto)
+00fa0463  // 06c: no_max: beq  x20, x15, es_clave    SALTO: si elemento == 7, se salta la linea siguiente
+001b0b13  // 070: addi x22, x22, 1                   (solo si NO es 7) contador no-7 += 1
+00488893  // 074: es_clave: addi x17, x17, 4         puntero avanza al siguiente elemento
+0128ad33  // 078: slt  x26, x17, x18                 x26 = (quedan elementos)
+fdbd0ee3  // 07c: beq  x26, x27, recorrido           SALTO: si quedan elementos, vuelve a leer
+fffc8c93  // 080: addi x25, x25, -1                  una pasada menos
+01902d33  // 084: slt  x26, x0, x25                  x26 = (quedan pasadas)
+fdbd06e3  // 088: beq  x26, x27, pasada              SALTO: si quedan pasadas, repite
+02000693  // 08c: addi x13, x0, 32                   32 elementos revisados (8 x 4)
+416686b3  // 090: sub  x13, x13, x22                 veces el 7 = 32 - no-7 = 12
+02b0a023  // 094: sw   x11, 32(x1)                   1568: suma = 188
+02c0a223  // 098: sw   x12, 36(x1)                   1572: maximo = 25
+02d0a423  // 09c: sw   x13, 40(x1)                   1576: veces el 7 = 12
+00c58c33  // 0a0: add  x24, x11, x12                 x24 = suma + maximo = 213 (dato de control)
+0380a623  // 0a4: sw   x24, 44(x1)                   1580: control = 213 (ultimo sw)
+0000006f  // 0a8: fin: jal  x0, fin                  bucle final (PC_FINAL)

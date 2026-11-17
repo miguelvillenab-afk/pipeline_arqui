@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wave_config>
+   <wave_state>
+   </wave_state>
+   <db_ref_list>
+      <db_ref path="tb_top_opt_behav.wdb" id="1">
+         <top_modules>
+            <top_module name="glbl" />
+            <top_module name="tb_top_opt" />
+         </top_modules>
+      </db_ref>
+   </db_ref_list>
+   <zoom_setting>
+      <ZoomStartTime time="56.631 ns"></ZoomStartTime>
+      <ZoomEndTime time="166.332 ns"></ZoomEndTime>
+      <Cursor1Time time="116.631 ns"></Cursor1Time>
+   </zoom_setting>
+   <column_width_setting>
+      <NameColumnWidth column_width="217"></NameColumnWidth>
+      <ValueColumnWidth column_width="74"></ValueColumnWidth>
+   </column_width_setting>
+   <WVObjectSize size="56" />
+   <wvobject fp_name="/tb_top_opt/clk" type="logic">
+      <obj_property name="ElementShortName">clk</obj_property>
+      <obj_property name="ObjectShortName">clk</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/reset" type="logic">
+      <obj_property name="ElementShortName">reset</obj_property>
+      <obj_property name="ObjectShortName">reset</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/PC" type="array">
+      <obj_property name="ElementShortName">PC[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/ex_PCSrc" type="logic">
+      <obj_property name="ElementShortName">ex_PCSrc</obj_property>
+      <obj_property name="ObjectShortName">ex_PCSrc</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/flush_ifid_hz" type="logic">
+      <obj_property name="ElementShortName">flush_ifid_hz</obj_property>
+      <obj_property name="ObjectShortName">flush_ifid_hz</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/MEM_WB_PC4" type="array">
+      <obj_property name="ElementShortName">MEM_WB_PC4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_PC4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/MEM_WB_B_PC4" type="array">
+      <obj_property name="ElementShortName">MEM_WB_B_PC4[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MEM_WB_B_PC4[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/predict_taken_A_eff" type="logic">
+      <obj_property name="ElementShortName">predict_taken_A_eff</obj_property>
+      <obj_property name="ObjectShortName">predict_taken_A_eff</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/ID_EX_predict_taken" type="logic">
+      <obj_property name="ElementShortName">ID_EX_predict_taken</obj_property>
+      <obj_property name="ObjectShortName">ID_EX_predict_taken</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/mispred_A" type="logic">
+      <obj_property name="ElementShortName">mispred_A</obj_property>
+      <obj_property name="ObjectShortName">mispred_A</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/mispred_B" type="logic">
+      <obj_property name="ElementShortName">mispred_B</obj_property>
+      <obj_property name="ObjectShortName">mispred_B</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dut/rvd/dp/bht_inst/bht_table[31]" type="array">
+      <obj_property name="ElementShortName">[31][1:0]</obj_property>
+      <obj_property name="ObjectShortName">[31][1:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/DataAdr" type="array">
+      <obj_property name="ElementShortName">DataAdr[31:0]</obj_property>
+      <obj_property name="ObjectShortName">DataAdr[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/WriteData" type="array">
+      <obj_property name="ElementShortName">WriteData[31:0]</obj_property>
+      <obj_property name="ObjectShortName">WriteData[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1536" type="array">
+      <obj_property name="ElementShortName">M1536[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1536[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1540" type="array">
+      <obj_property name="ElementShortName">M1540[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1540[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1544" type="array">
+      <obj_property name="ElementShortName">M1544[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1544[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1548" type="array">
+      <obj_property name="ElementShortName">M1548[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1548[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1552" type="array">
+      <obj_property name="ElementShortName">M1552[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1552[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1556" type="array">
+      <obj_property name="ElementShortName">M1556[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1556[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1560" type="array">
+      <obj_property name="ElementShortName">M1560[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1560[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1564" type="array">
+      <obj_property name="ElementShortName">M1564[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1564[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1568" type="array">
+      <obj_property name="ElementShortName">M1568[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1568[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1572" type="array">
+      <obj_property name="ElementShortName">M1572[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1572[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1576" type="array">
+      <obj_property name="ElementShortName">M1576[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1576[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1580" type="array">
+      <obj_property name="ElementShortName">M1580[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1580[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1584" type="array">
+      <obj_property name="ElementShortName">M1584[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1584[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/M1588" type="array">
+      <obj_property name="ElementShortName">M1588[31:0]</obj_property>
+      <obj_property name="ObjectShortName">M1588[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/pc4_w0" type="array">
+      <obj_property name="ElementShortName">pc4_w0[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc4_w0[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/pc4_w1" type="array">
+      <obj_property name="ElementShortName">pc4_w1[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pc4_w1[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/valid0" type="logic">
+      <obj_property name="ElementShortName">valid0</obj_property>
+      <obj_property name="ObjectShortName">valid0</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/valid1" type="logic">
+      <obj_property name="ElementShortName">valid1</obj_property>
+      <obj_property name="ObjectShortName">valid1</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/final_retire" type="logic">
+      <obj_property name="ElementShortName">final_retire</obj_property>
+      <obj_property name="ObjectShortName">final_retire</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/ctrl_A" type="logic">
+      <obj_property name="ElementShortName">ctrl_A</obj_property>
+      <obj_property name="ObjectShortName">ctrl_A</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/ctrl_B" type="logic">
+      <obj_property name="ElementShortName">ctrl_B</obj_property>
+      <obj_property name="ObjectShortName">ctrl_B</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/cycle_count" type="array">
+      <obj_property name="ElementShortName">cycle_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">cycle_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/instr_count" type="array">
+      <obj_property name="ElementShortName">instr_count[31:0]</obj_property>
+      <obj_property name="ObjectShortName">instr_count[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/dual_ret" type="array">
+      <obj_property name="ElementShortName">dual_ret[31:0]</obj_property>
+      <obj_property name="ObjectShortName">dual_ret[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/single_ret" type="array">
+      <obj_property name="ElementShortName">single_ret[31:0]</obj_property>
+      <obj_property name="ObjectShortName">single_ret[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/solo_B" type="array">
+      <obj_property name="ElementShortName">solo_B[31:0]</obj_property>
+      <obj_property name="ObjectShortName">solo_B[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/stall_cnt" type="array">
+      <obj_property name="ElementShortName">stall_cnt[31:0]</obj_property>
+      <obj_property name="ObjectShortName">stall_cnt[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/flush_cnt" type="array">
+      <obj_property name="ElementShortName">flush_cnt[31:0]</obj_property>
+      <obj_property name="ObjectShortName">flush_cnt[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/br_total" type="array">
+      <obj_property name="ElementShortName">br_total[31:0]</obj_property>
+      <obj_property name="ObjectShortName">br_total[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/br_taken" type="array">
+      <obj_property name="ElementShortName">br_taken[31:0]</obj_property>
+      <obj_property name="ObjectShortName">br_taken[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/pred_taken" type="array">
+      <obj_property name="ElementShortName">pred_taken[31:0]</obj_property>
+      <obj_property name="ObjectShortName">pred_taken[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/mispred" type="array">
+      <obj_property name="ElementShortName">mispred[31:0]</obj_property>
+      <obj_property name="ObjectShortName">mispred[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/done" type="logic">
+      <obj_property name="ElementShortName">done</obj_property>
+      <obj_property name="ObjectShortName">done</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/CPI" type="other">
+      <obj_property name="ElementShortName">CPI</obj_property>
+      <obj_property name="ObjectShortName">CPI</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/IPC" type="other">
+      <obj_property name="ElementShortName">IPC</obj_property>
+      <obj_property name="ObjectShortName">IPC</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/esperado" type="array">
+      <obj_property name="ElementShortName">esperado[0:13][31:0]</obj_property>
+      <obj_property name="ObjectShortName">esperado[0:13][31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/i" type="array">
+      <obj_property name="ElementShortName">i[31:0]</obj_property>
+      <obj_property name="ObjectShortName">i[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/errores" type="array">
+      <obj_property name="ElementShortName">errores[31:0]</obj_property>
+      <obj_property name="ObjectShortName">errores[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/MEMFILE" type="array">
+      <obj_property name="ElementShortName">MEMFILE[127:0]</obj_property>
+      <obj_property name="ObjectShortName">MEMFILE[127:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/PC_FINAL" type="array">
+      <obj_property name="ElementShortName">PC_FINAL[31:0]</obj_property>
+      <obj_property name="ObjectShortName">PC_FINAL[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/MAX_TIME" type="array">
+      <obj_property name="ElementShortName">MAX_TIME[31:0]</obj_property>
+      <obj_property name="ObjectShortName">MAX_TIME[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_top_opt/CHECK_MEM" type="array">
+      <obj_property name="ElementShortName">CHECK_MEM[31:0]</obj_property>
+      <obj_property name="ObjectShortName">CHECK_MEM[31:0]</obj_property>
+   </wvobject>
+</wave_config>
