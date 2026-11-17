@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 module top_dual #(
-    parameter MEMFILE = "prueba_final.mem"
+    parameter MEMFILE = "dual_raw_forwarding.mem"
     )(
     input  clk,
     input  reset,
@@ -47,4 +47,4 @@ module top_dual #(
         .rd  (ReadData)
     );
 
-endmodule
+endmodule

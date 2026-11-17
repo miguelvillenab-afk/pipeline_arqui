@@ -13,13 +13,13 @@
    <zoom_setting>
       <ZoomStartTime time="0.000 ns"></ZoomStartTime>
       <ZoomEndTime time="182.299 ns"></ZoomEndTime>
-      <Cursor1Time time="20.000 ns"></Cursor1Time>
+      <Cursor1Time time="50.000 ns"></Cursor1Time>
    </zoom_setting>
    <column_width_setting>
       <NameColumnWidth column_width="203"></NameColumnWidth>
       <ValueColumnWidth column_width="74"></ValueColumnWidth>
    </column_width_setting>
-   <WVObjectSize size="12" />
+   <WVObjectSize size="18" />
    <wvobject fp_name="/tb_dual_raw_forwarding/PC" type="array">
       <obj_property name="ElementShortName">PC[31:0]</obj_property>
       <obj_property name="ObjectShortName">PC[31:0]</obj_property>
@@ -35,6 +35,30 @@
    <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/issue_B_comb" type="logic">
       <obj_property name="ElementShortName">issue_B_comb</obj_property>
       <obj_property name="ObjectShortName">issue_B_comb</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/fwdA_A" type="array">
+      <obj_property name="ElementShortName">fwdA_A[2:0]</obj_property>
+      <obj_property name="ObjectShortName">fwdA_A[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/fwdB_A" type="array">
+      <obj_property name="ElementShortName">fwdB_A[2:0]</obj_property>
+      <obj_property name="ObjectShortName">fwdB_A[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/fwdA_B" type="array">
+      <obj_property name="ElementShortName">fwdA_B[2:0]</obj_property>
+      <obj_property name="ObjectShortName">fwdA_B[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/fwdB_B" type="array">
+      <obj_property name="ElementShortName">fwdB_B[2:0]</obj_property>
+      <obj_property name="ObjectShortName">fwdB_B[2:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/alu_SrcA_fwd" type="array">
+      <obj_property name="ElementShortName">alu_SrcA_fwd[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcA_fwd[31:0]</obj_property>
+   </wvobject>
+   <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/alu_SrcB_fwd" type="array">
+      <obj_property name="ElementShortName">alu_SrcB_fwd[31:0]</obj_property>
+      <obj_property name="ObjectShortName">alu_SrcB_fwd[31:0]</obj_property>
    </wvobject>
    <wvobject fp_name="/tb_dual_raw_forwarding/uut/rvd/dp/ex_ALUResult" type="array">
       <obj_property name="ElementShortName">ex_ALUResult[31:0]</obj_property>
